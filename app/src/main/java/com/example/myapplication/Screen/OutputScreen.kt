@@ -46,7 +46,8 @@ import com.example.myapplication.R
 fun OutputScreen(navController: NavController) {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Top
+        verticalArrangement = Arrangement.Top,
+        modifier = Modifier.fillMaxSize()
     ) {
         // 상단 여백
         Spacer(modifier = Modifier.height(40.dp))

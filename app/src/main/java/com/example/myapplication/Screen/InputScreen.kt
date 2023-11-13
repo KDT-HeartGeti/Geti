@@ -89,7 +89,8 @@ fun InputScreen(navController: NavController) {
 
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Top
+        verticalArrangement = Arrangement.Top,
+        modifier = Modifier.fillMaxSize()
     ) {
         // 상단 여백
         Spacer(modifier = Modifier.height(90.dp))
@@ -121,8 +122,16 @@ fun InputScreen(navController: NavController) {
                 },
                 text = "불러오기"
             )
-            GetiButton(onclick = { navController.navigate(NavScreen.Output.route) }, text = "예측하기")
         }
+        Spacer(modifier = Modifier.height(25.dp))
+        GetiButton(
+            onclick = {
+                if (selectUri != null || takenPhoto != null) {
+                    navController.navigate(NavScreen.Output.route)
+                }
+            },
+            text = "예측하기"
+        )
     }
 }
 
