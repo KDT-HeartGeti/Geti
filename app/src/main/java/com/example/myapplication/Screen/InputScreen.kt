@@ -1,6 +1,7 @@
 package com.example.myapplication.Screen
 
 import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.net.Uri
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.PickVisualMediaRequest
@@ -29,26 +30,31 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
+import androidx.compose.ui.graphics.asImageBitmap
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
+import com.example.myapplication.Component.uriToBitmap
+import com.example.myapplication.NavScreen
 import com.example.myapplication.R
 
-@Preview
-@Composable
-fun previewSurfaceIn() {
-    Surface(
-        Modifier.fillMaxSize()
-    ) {
-        InputScreen()
-    }
-}
+//@Preview
+//@Composable
+//fun previewSurfaceIn() {
+//    Surface(
+//        Modifier.fillMaxSize()
+//    ) {
+//        InputScreen()
+//    }
+//}
 
 @Composable
-fun InputScreen() {
+fun InputScreen(navController: NavController) {
     // 갤러리 이미지 uri 객체
     var selectUri by remember {
         mutableStateOf<Uri?>(null)
@@ -66,6 +72,12 @@ fun InputScreen() {
             takenPhoto = null
         }
     )
+    // 비트맵 변환 변수
+    val bitmap: Bitmap? = selectUri?.let { uriToBitmap(it, context) } ?: takenPhoto
+    // 이미지 == null일 때 이미지
+    val resources = context.resources
+    val defaultImageBitmap =
+        BitmapFactory.decodeResource(resources, R.drawable.no_image).asImageBitmap()
     // 카메라 이미지 런쳐
     val cameraLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.TakePicturePreview(),
@@ -83,13 +95,11 @@ fun InputScreen() {
         Spacer(modifier = Modifier.height(90.dp))
         // 입력 페이지에 나타날 이미지 공간
         Image(
-            painter = painterResource(
-                id = R.drawable.no_image
-            ),
-            contentDescription = "uploaded picture",
+            bitmap = bitmap?.asImageBitmap() ?: defaultImageBitmap, contentDescription = null,
             modifier = Modifier
                 .border(width = 3.dp, Color.Gray)
-                .size(300.dp)
+                .size(300.dp),
+            contentScale = ContentScale.Crop
         )
         // 이미지와 버튼 여백
         Spacer(modifier = Modifier.height(25.dp))
@@ -111,6 +121,7 @@ fun InputScreen() {
                 },
                 text = "불러오기"
             )
+            GetiButton(onclick = { navController.navigate(NavScreen.Output.route) }, text = "예측하기")
         }
     }
 }

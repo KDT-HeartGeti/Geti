@@ -29,20 +29,21 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
 import com.example.myapplication.R
 
-@Preview
-@Composable
-fun previewSurfaceOut() {
-    Surface(
-        Modifier.fillMaxSize()
-    ) {
-        OutputScreen()
-    }
-}
+//@Preview
+//@Composable
+//fun previewSurfaceOut() {
+//    Surface(
+//        Modifier.fillMaxSize()
+//    ) {
+//        OutputScreen()
+//    }
+//}
 
 @Composable
-fun OutputScreen() {
+fun OutputScreen(navController: NavController) {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Top
