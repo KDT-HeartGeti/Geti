@@ -38,103 +38,103 @@ import org.tensorflow.lite.support.image.ops.ResizeOp
 
 @Composable
 fun MainScreen() {
-//    var selectUri by remember { // 갤러리 이미지 uri 객체
-//        mutableStateOf<Uri?>(null)
-//    }
-//    var takenPhoto by remember { // 기본 사진 앱 비트맵 객체
-//        mutableStateOf<Bitmap?>(null)
-//    }
-//
-//    val context = LocalContext.current
-//    val launcher = // 갤러리 이미지 런쳐
-//        rememberLauncherForActivityResult(
-//            contract = ActivityResultContracts.PickVisualMedia(),
-//            onResult = { uri ->
-//                selectUri = uri
-//                takenPhoto = null
-//            }
-//        )
-//    val cameraLauncher = // 카메라 이미지 런쳐
-//        rememberLauncherForActivityResult(contract = ActivityResultContracts.TakePicturePreview(),
-//            onResult = { photo ->
-//                takenPhoto = photo
-//                selectUri = null
-//            })
-//    val bitmap: Bitmap? = selectUri?.let { uriToBitmap(it, context) } ?: takenPhoto
-//    val resources = context.resources
-//    val defaultImageBitmap =
-//        BitmapFactory.decodeResource(resources, R.drawable.no_image).asImageBitmap()
-//
-//
-//    val imageProcessor = ImageProcessor.Builder()
-//        .add(NormalizeOp(0.0f, 255.0f))  // 이 줄 추가 안해서 입력값 달랐음 (1, 150, 150, 3)
-////        .add(TransformToGrayScaleOp()) // 회색조 이미지, 라이브러리 tensorflow lite support 필요
-//        .add(ResizeOp(224, 224, ResizeOp.ResizeMethod.BILINEAR))
-//        .build()
-//
-//    var outputText by remember { mutableStateOf("") }
-//
-//    Column(
-//        horizontalAlignment = Alignment.CenterHorizontally,
-//        verticalArrangement = Arrangement.Center,
-//        modifier = Modifier.padding(16.dp),
-//    ) {
-//        Image(
-//            bitmap = bitmap?.asImageBitmap() ?: defaultImageBitmap, contentDescription = null,
-//            modifier = Modifier
-//                .size(224.dp),
-//        )
-//        Row {
-//            Button(
-//                onClick = {
-//                    launcher.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
-//                },
-//                shape = RoundedCornerShape(
-//                    topStart = 16.dp,
-//                    topEnd = 0.dp,
-//                    bottomStart = 16.dp,
-//                    bottomEnd = 0.dp
-//                ),
-//                border = BorderStroke(1.dp, Color.Gray),
-//                modifier = Modifier.fillMaxWidth(0.5f),
-//            ) {
-//                Text(text = "photo")
-//            }
-//            Button(
-//                onClick = {
-//                    cameraLauncher.launch(null)  // 기본 카메라 앱 실행
-//                },
-//                shape = RoundedCornerShape(
-//                    topStart = 0.dp,
-//                    topEnd = 16.dp,
-//                    bottomStart = 0.dp,
-//                    bottomEnd = 16.dp
-//                ),
-//                border = BorderStroke(1.dp, Color.Gray),
-//                modifier = Modifier.fillMaxWidth(1f),
-//            ) {
-//                Text(text = "camera")
-//            }
-//        }
-//        Button(
-//            onClick = {
-//                outputText = handleButtonClick(
-//                    context = context,
-//                    bitmap = bitmap,
-//                    imageProcessor = imageProcessor
-//                )
-//            },
-//            enabled = (bitmap != null)
-//        ) {
-//            Text(text = "Predict")
-//        }
-//
-//        Text(
-//            text = outputText,
-//            fontSize = 50.sp,
-//            color = if (outputText == "organic") Color.Red else Color.Blue,
-//        )
-//    }
+    var selectUri by remember { // 갤러리 이미지 uri 객체
+        mutableStateOf<Uri?>(null)
+    }
+    var takenPhoto by remember { // 기본 사진 앱 비트맵 객체
+        mutableStateOf<Bitmap?>(null)
+    }
+
+    val context = LocalContext.current
+    val launcher = // 갤러리 이미지 런쳐
+        rememberLauncherForActivityResult(
+            contract = ActivityResultContracts.PickVisualMedia(),
+            onResult = { uri ->
+                selectUri = uri
+                takenPhoto = null
+            }
+        )
+    val cameraLauncher = // 카메라 이미지 런쳐
+        rememberLauncherForActivityResult(contract = ActivityResultContracts.TakePicturePreview(),
+            onResult = { photo ->
+                takenPhoto = photo
+                selectUri = null
+            })
+    val bitmap: Bitmap? = selectUri?.let { uriToBitmap(it, context) } ?: takenPhoto
+    val resources = context.resources
+    val defaultImageBitmap =
+        BitmapFactory.decodeResource(resources, R.drawable.no_image).asImageBitmap()
+
+
+    val imageProcessor = ImageProcessor.Builder()
+        .add(NormalizeOp(0.0f, 255.0f))  // 이 줄 추가 안해서 입력값 달랐음 (1, 150, 150, 3)
+//        .add(TransformToGrayScaleOp()) // 회색조 이미지, 라이브러리 tensorflow lite support 필요
+        .add(ResizeOp(224, 224, ResizeOp.ResizeMethod.BILINEAR))
+        .build()
+
+    var outputText by remember { mutableStateOf("") }
+
+    Column(
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.Center,
+        modifier = Modifier.padding(16.dp),
+    ) {
+        Image(
+            bitmap = bitmap?.asImageBitmap() ?: defaultImageBitmap, contentDescription = null,
+            modifier = Modifier
+                .size(224.dp),
+        )
+        Row {
+            Button(
+                onClick = {
+                    launcher.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
+                },
+                shape = RoundedCornerShape(
+                    topStart = 16.dp,
+                    topEnd = 0.dp,
+                    bottomStart = 16.dp,
+                    bottomEnd = 0.dp
+                ),
+                border = BorderStroke(1.dp, Color.Gray),
+                modifier = Modifier.fillMaxWidth(0.5f),
+            ) {
+                Text(text = "photo")
+            }
+            Button(
+                onClick = {
+                    cameraLauncher.launch(null)  // 기본 카메라 앱 실행
+                },
+                shape = RoundedCornerShape(
+                    topStart = 0.dp,
+                    topEnd = 16.dp,
+                    bottomStart = 0.dp,
+                    bottomEnd = 16.dp
+                ),
+                border = BorderStroke(1.dp, Color.Gray),
+                modifier = Modifier.fillMaxWidth(1f),
+            ) {
+                Text(text = "camera")
+            }
+        }
+        Button(
+            onClick = {
+                outputText = handleButtonClick(
+                    context = context,
+                    bitmap = bitmap,
+                    imageProcessor = imageProcessor
+                )
+            },
+            enabled = (bitmap != null)
+        ) {
+            Text(text = "Predict")
+        }
+
+        Text(
+            text = outputText,
+            fontSize = 50.sp,
+            color = if (outputText == "organic") Color.Red else Color.Blue,
+        )
+    }
 }
 
 

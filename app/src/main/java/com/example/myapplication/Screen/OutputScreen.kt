@@ -14,6 +14,8 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -54,6 +56,20 @@ fun OutputScreen(navController: NavController, menuName: String) {
         verticalArrangement = Arrangement.Top,
         modifier = Modifier.fillMaxSize()
     ) {
+        Row(
+            horizontalArrangement = Arrangement.Start,
+            modifier = Modifier.fillMaxWidth().height(10.dp)
+        ) {
+            // 뒤로 가기
+            IconButton(
+                onClick = { navController.popBackStack() }
+            ) {
+                Icon(
+                    painter = painterResource(id = android.R.drawable.ic_menu_revert),
+                    contentDescription = "Go back",
+                )
+            }
+        }
         // 상단 여백
         Spacer(modifier = Modifier.height(40.dp))
         // 해당 음식 이미지
