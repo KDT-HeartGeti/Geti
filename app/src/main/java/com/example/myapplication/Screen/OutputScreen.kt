@@ -31,6 +31,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.myapplication.R
+import com.example.myapplication.data.FoodNutrient
+import com.example.myapplication.database.getFoodNutrientByName
 
 //@Preview
 //@Composable
@@ -43,7 +45,10 @@ import com.example.myapplication.R
 //}
 
 @Composable
-fun OutputScreen(navController: NavController) {
+fun OutputScreen(navController: NavController, menuName: String) {
+    // 맵핑한 함수에서 해당 데이터 클래스의 value값 가져와서 변수에 할당
+    val foodNutrient = getFoodNutrientByName(menuName)
+
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Top,
@@ -61,13 +66,49 @@ fun OutputScreen(navController: NavController) {
         // 이미지와 이름 여백
         Spacer(modifier = Modifier.height(15.dp))
         // 음식 이름 Text
-        FoodInfo(redText = "피자", blackText = "입니다")
-        // 음식 성분 정도 Text
-        NutrientInfo(explainText = "중접시(1조각) : ", quantityText = 218, unitText = " kcal")
-        NutrientInfo(explainText = "포함 당질 : ", quantityText = 26, unitText = " g (100g 당)")
+        foodNutrient?.let {
+            FoodInfo(redText = it.menu, blackText = "입니다")
+        }
+        // 정렬을 위한 Column
+        Column(
+            horizontalAlignment = Alignment.Start,
+            modifier = Modifier.width(300.dp)
+        ) {
+            // 음식 성분 정도 Text
+            foodNutrient?.let {
+                NutrientInfo(
+                    explainText = "열량 : ",
+                    quantityText = it.kcalPer100g,
+                    unitText = " kcal (100g 당)"
+                )
+            }
+            foodNutrient?.let {
+                NutrientInfo(
+                    explainText = "${it.foodUnit} : ",
+                    quantityText = it.kcalPerUnit,
+                    unitText = " kcal"
+                )
+            }
+            foodNutrient?.let {
+                NutrientInfo(
+                    explainText = "포함 당질 : ",
+                    quantityText = it.sugarPer100g,
+                    unitText = " g (100g 당)"
+                )
+            }
+            foodNutrient?.let {
+                NutrientInfo(
+                    explainText = "${it.foodUnit} : ",
+                    quantityText = it.sugarPerUnit,
+                    unitText = " g"
+                )
+            }
+        }
         // 위험도 Text 표시
-        FoodInfo(redText = "고위험", blackText = " 식품군입니다.")
-        DangerBox(dangerNum = 5)
+//        FoodInfo(redText = "고위험", blackText = " 식품군입니다.")
+        foodNutrient?.let {
+            DangerBox(dangerNum = it.danger)
+        }
     }
 }
 
@@ -100,7 +141,7 @@ fun FoodInfo(redText: String, blackText: String) {
 }
 
 @Composable
-fun NutrientInfo(explainText: String, quantityText: Int, unitText: String) {
+fun NutrientInfo(explainText: String, quantityText: Double, unitText: String) {
     Row(
         horizontalArrangement = Arrangement.Start,
         verticalAlignment = Alignment.Bottom,
@@ -139,7 +180,7 @@ fun DangerBox(dangerNum: Int) {
                                 else -> Color.Cyan
                             }
                         } else {
-                            Color.White
+                            Color.Transparent
                         },
                         shape = CircleShape
                     )
