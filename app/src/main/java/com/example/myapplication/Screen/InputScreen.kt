@@ -19,8 +19,10 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -53,6 +55,7 @@ import com.example.myapplication.R
 //    }
 //}
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun InputScreen(navController: NavController) {
     // 갤러리 이미지 uri 객체
@@ -86,6 +89,8 @@ fun InputScreen(navController: NavController) {
             selectUri = null
         }
     )
+    var menu by remember { mutableStateOf("") }
+    var menuName: String? = null
 
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -109,6 +114,7 @@ fun InputScreen(navController: NavController) {
             horizontalArrangement = Arrangement.SpaceBetween,
             modifier = Modifier.width(300.dp)
         ) {
+            // 카메라 실행 버튼
             GetiButton(
                 onclick = {
                     // 기본 카메라 앱 실행
@@ -116,6 +122,7 @@ fun InputScreen(navController: NavController) {
                 },
                 text = "사진찍기"
             )
+            // 사진 선택 도구 불러오는 버튼
             GetiButton(
                 onclick = {
                     launcher.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
@@ -124,14 +131,36 @@ fun InputScreen(navController: NavController) {
             )
         }
         Spacer(modifier = Modifier.height(25.dp))
+        // OutputScreen으로 넘어가는 버튼
         GetiButton(
             onclick = {
                 if (selectUri != null || takenPhoto != null) {
-                    navController.navigate(NavScreen.Output.route)
+                    // 버튼 클릭시 OutputScreen으로 menuName 전달하면서 이동 -> 추후에 selectUri넘겨주는 로직으로 변경할 예정
+                    navController.navigate("output/$menuName")
                 }
             },
             text = "예측하기"
         )
+        Spacer(modifier = Modifier.height(25.dp))
+        Row {
+            // 메뉴 이름 작성 TextField
+            TextField(
+                value = menu,
+                onValueChange = { menu = it },
+                label = { Text(text = "음식이름을 입력하세요.") }
+            )
+            // OutputScreen으로 넘겨주는 버튼
+            Button(
+                onClick = {
+                    // 메뉴를 고정된 상태로 OutputScreen으로 넘겨주기 위한 변수 할당
+                    menuName = menu
+                    // 버튼 클릭시 OutputScreen으로 menuName 전달하면서 이동
+                    navController.navigate("output/$menuName")
+                }
+            ) {
+                Text(text = "입력")
+            }
+        }
     }
 }
 
