@@ -8,6 +8,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
@@ -25,7 +26,7 @@ class MainActivity : ComponentActivity() {
                 // A surface container using the 'background' color from the theme
                 Surface(
                     modifier = Modifier.fillMaxSize(),
-                    color = MaterialTheme.colorScheme.background
+                    color = Color.White
                 ) {
                     // navigation 변수 선언
                     val navController = rememberNavController()
@@ -35,9 +36,14 @@ class MainActivity : ComponentActivity() {
                     }
 
                     // navigation
-                    NavHost(navController = navController, startDestination = startDestination){
+                    NavHost(navController = navController, startDestination = startDestination) {
                         composable(NavScreen.Input.route) { InputScreen(navController) }
-                        composable(NavScreen.Output.route) { OutputScreen(navController) }
+                        composable(NavScreen.Output.route) {
+                            OutputScreen(
+                                navController,
+                                it.arguments?.getString("menuName") ?: ""
+                            )
+                        }
                     }
                 }
             }
