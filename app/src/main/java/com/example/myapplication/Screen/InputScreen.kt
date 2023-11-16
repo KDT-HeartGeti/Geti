@@ -44,9 +44,7 @@ import com.example.myapplication.Component.bitmapToUri
 import com.example.myapplication.Component.uriToBitmap
 import com.example.myapplication.R
 import com.example.myapplication.network.post
-import okhttp3.Call
-import okhttp3.Callback
-import okhttp3.Response
+
 import java.io.File
 import java.io.FileOutputStream
 import java.io.IOException
