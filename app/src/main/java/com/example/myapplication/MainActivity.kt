@@ -1,5 +1,6 @@
 package com.example.myapplication
 
+import android.net.Uri
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -13,6 +14,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.myapplication.Screen.InputScreen
+import com.example.myapplication.Screen.LoadingScreen
 import com.example.myapplication.Screen.MainScreen
 import com.example.myapplication.Screen.OutputScreen
 import com.example.myapplication.ui.theme.MyApplicationTheme
@@ -38,10 +40,18 @@ class MainActivity : ComponentActivity() {
                     // navigation
                     NavHost(navController = navController, startDestination = startDestination) {
                         composable(NavScreen.Input.route) { InputScreen(navController) }
-                        composable(NavScreen.Output.route) {
+                        composable("output/{predictValue}/{selectUri}") {
                             OutputScreen(
                                 navController,
-                                it.arguments?.getString("menuName") ?: ""
+                                it.arguments?.getString("predictValue") ?: "",
+                                it.arguments?.getString("selectUri") ?: ""
+
+                            )
+                        }
+                        composable(NavScreen.Loading.route) {
+                            LoadingScreen(
+                                navController,
+                                it.arguments?.getString("selectUri") ?: ""
                             )
                         }
                     }

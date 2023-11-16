@@ -77,7 +77,7 @@ dependencies {
     debugImplementation("androidx.compose.ui:ui-test-manifest")
     val nav_version = "2.5.3"
     implementation("androidx.navigation:navigation-compose:$nav_version")
-//    implementation("org.tensorflow:tensorflow-lite-task-vision-play-services:0.4.2.1")
+    // implementation("org.tensorflow:tensorflow-lite-task-vision-play-services:0.4.2.1")
     // Tensorflow Lite dependencies for Google Play services
     // Optional: include Tensorflow Lite Support Library
 

@@ -3,6 +3,9 @@ package com.example.myapplication.Screen
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.net.Uri
+import android.os.Handler
+import android.os.Looper
+import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
@@ -20,7 +23,6 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
@@ -31,29 +33,25 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import com.example.myapplication.Component.bitmapToUri
 import com.example.myapplication.Component.uriToBitmap
-import com.example.myapplication.NavScreen
 import com.example.myapplication.R
+import com.example.myapplication.network.post
+import okhttp3.Call
+import okhttp3.Callback
+import okhttp3.Response
+import java.io.File
+import java.io.FileOutputStream
+import java.io.IOException
 
-//@Preview
-//@Composable
-//fun previewSurfaceIn() {
-//    Surface(
-//        Modifier.fillMaxSize()
-//    ) {
-//        InputScreen()
-//    }
-//}
+
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -67,6 +65,7 @@ fun InputScreen(navController: NavController) {
         mutableStateOf<Bitmap?>(null)
     }
     val context = LocalContext.current
+
     // 갤러리 이미지 런쳐
     val launcher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.PickVisualMedia(),
@@ -77,20 +76,52 @@ fun InputScreen(navController: NavController) {
     )
     // 비트맵 변환 변수
     val bitmap: Bitmap? = selectUri?.let { uriToBitmap(it, context) } ?: takenPhoto
+
     // 이미지 == null일 때 이미지
     val resources = context.resources
     val defaultImageBitmap =
         BitmapFactory.decodeResource(resources, R.drawable.no_image).asImageBitmap()
+
     // 카메라 이미지 런쳐
     val cameraLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.TakePicturePreview(),
         onResult = { photo ->
-            takenPhoto = photo
-            selectUri = null
+            if(photo != null) {
+                takenPhoto = photo
+                selectUri = bitmapToUri(context, takenPhoto!!)
+            }
         }
     )
+
     var menu by remember { mutableStateOf("") }
     var menuName: String? = null
+
+    // 서버에 이미지 보내고 응답 받기
+    val file = File(context.cacheDir, "image.jpg")
+    file.createNewFile()
+
+    val fos = FileOutputStream(file)
+    bitmap?.compress(Bitmap.CompressFormat.JPEG, 100, fos)
+    fos.close()
+
+    // 파일을 서버로 보내고, 응답을 받음
+    post("http://192.168.1.59:5000/prediction", file, object : Callback {
+        override fun onFailure(call: Call, e: IOException) {
+            e.printStackTrace()
+        }
+
+        override fun onResponse(call: Call, response: Response) {
+            if (!response.isSuccessful) {
+                throw IOException("Unexpected code $response")
+            }
+
+            // 응답을 받아서 화면에 표시
+            val result = response.body()?.string()
+            println(result)
+            Handler(Looper.getMainLooper()).post(Toast.makeText(context, result, Toast.LENGTH_SHORT)::show)
+        }
+    })
+
 
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -131,16 +162,18 @@ fun InputScreen(navController: NavController) {
             )
         }
         Spacer(modifier = Modifier.height(25.dp))
+
         // OutputScreen으로 넘어가는 버튼
         GetiButton(
             onclick = {
-                if (selectUri != null || takenPhoto != null) {
+                if (selectUri != null) {
                     // 버튼 클릭시 OutputScreen으로 menuName 전달하면서 이동 -> 추후에 selectUri넘겨주는 로직으로 변경할 예정
-                    navController.navigate("output/$menuName")
+                    navController.navigate("output/${selectUri.toString()}")
                 }
             },
             text = "예측하기"
         )
+
         Spacer(modifier = Modifier.height(25.dp))
         Row {
             // 메뉴 이름 작성 TextField
@@ -155,7 +188,7 @@ fun InputScreen(navController: NavController) {
                     // 메뉴를 고정된 상태로 OutputScreen으로 넘겨주기 위한 변수 할당
                     menuName = menu
                     // 버튼 클릭시 OutputScreen으로 menuName 전달하면서 이동
-                    navController.navigate("output/$menuName")
+//                    navController.navigate("output/$menuName")
                 }
             ) {
                 Text(text = "입력")
@@ -178,3 +211,13 @@ fun GetiButton(onclick: () -> Unit, text: String) {
         Text(text = text, color = Color.Black, textAlign = TextAlign.Center, fontSize = 20.sp)
     }
 }
+
+//@Preview
+//@Composable
+//fun previewSurfaceIn() {
+//    Surface(
+//        Modifier.fillMaxSize()
+//    ) {
+//        InputScreen()
+//    }
+//}
