@@ -54,12 +54,14 @@ fun MainScreen() {
                 takenPhoto = null
             }
         )
+
     val cameraLauncher = // 카메라 이미지 런쳐
         rememberLauncherForActivityResult(contract = ActivityResultContracts.TakePicturePreview(),
             onResult = { photo ->
                 takenPhoto = photo
                 selectUri = null
             })
+
     val bitmap: Bitmap? = selectUri?.let { uriToBitmap(it, context) } ?: takenPhoto
     val resources = context.resources
     val defaultImageBitmap =

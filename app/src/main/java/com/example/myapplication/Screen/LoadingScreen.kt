@@ -23,6 +23,7 @@ import okhttp3.Request
 import okhttp3.RequestBody
 import org.json.JSONObject
 import java.io.IOException
+import java.net.URLDecoder
 
 
 //
@@ -32,9 +33,11 @@ fun LoadingScreen(navController: NavController, selectUri: String) {
     val coroutineScope = rememberCoroutineScope()
     // 맵핑한 함수에서 해당 데이터 클래스의 value값 가져와서 변수에 할당
     val context = LocalContext.current
-    var selectedUri by remember { mutableStateOf<Uri?>(null) }
+    val selectedUri = URLDecoder.decode(selectUri, "UTF-8")
+//    var selectedUri by remember { mutableStateOf<Uri?>(null) }
 
     suspend fun UploadImage(imageUri: Uri): String? = withContext(Dispatchers.IO)  {
+        // navDeepLink
         val url = "http://127.0.0.1:5000/prediction"
         val client = OkHttpClient()
 
@@ -77,11 +80,15 @@ fun LoadingScreen(navController: NavController, selectUri: String) {
         }
         return@withContext prediction
     }
+
     if(selectedUri != null) {
         coroutineScope.launch {
-            val predictValue = UploadImage(Uri.parse(selectUri))
+            val predictValue = UploadImage(Uri.parse(selectedUri))
             if (predictValue != null) {
-                navController.navigate("output/${predictValue}/${selectUri}")
+                var dataList = mutableListOf<String>()
+                dataList.add(predictValue)
+                dataList.add(selectUri)
+                navController.navigate("output/${predictValue}")
             }
         }
     }

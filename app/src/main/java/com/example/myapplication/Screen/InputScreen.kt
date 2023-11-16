@@ -50,7 +50,7 @@ import okhttp3.Response
 import java.io.File
 import java.io.FileOutputStream
 import java.io.IOException
-
+import java.net.URLEncoder
 
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -70,8 +70,10 @@ fun InputScreen(navController: NavController) {
     val launcher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.PickVisualMedia(),
         onResult = { uri ->
-            selectUri = uri
-            takenPhoto = null
+            if (uri != null) {
+                selectUri = uri
+                takenPhoto = null
+            }
         }
     )
     // 비트맵 변환 변수
@@ -96,31 +98,37 @@ fun InputScreen(navController: NavController) {
     var menu by remember { mutableStateOf("") }
     var menuName: String? = null
 
-    // 서버에 이미지 보내고 응답 받기
-    val file = File(context.cacheDir, "image.jpg")
-    file.createNewFile()
-
-    val fos = FileOutputStream(file)
-    bitmap?.compress(Bitmap.CompressFormat.JPEG, 100, fos)
-    fos.close()
-
-    // 파일을 서버로 보내고, 응답을 받음
-    post("http://192.168.1.59:5000/prediction", file, object : Callback {
-        override fun onFailure(call: Call, e: IOException) {
-            e.printStackTrace()
-        }
-
-        override fun onResponse(call: Call, response: Response) {
-            if (!response.isSuccessful) {
-                throw IOException("Unexpected code $response")
-            }
-
-            // 응답을 받아서 화면에 표시
-            val result = response.body()?.string()
-            println(result)
-            Handler(Looper.getMainLooper()).post(Toast.makeText(context, result, Toast.LENGTH_SHORT)::show)
-        }
-    })
+//    // 서버에 이미지 보내고 응답 받기
+//    val file = File(context.cacheDir, "image.jpg")
+//    file.createNewFile()
+//
+//    val fos = FileOutputStream(file)
+//    bitmap?.compress(Bitmap.CompressFormat.JPEG, 100, fos)
+//    fos.close()
+//
+//    var predictValue by remember {
+//        mutableStateOf("")
+//    }
+//
+//    post("http://192.168.1.59:5000/prediction", file, object : Callback {
+//        override fun onFailure(call: Call, e: IOException) {
+//            e.printStackTrace()
+//        }
+//
+//        override fun onResponse(call: Call, response: Response) {
+//            if (!response.isSuccessful) {
+//                throw IOException("왜인지 모르겠는데 응답이.. $response")
+//            }
+//
+//            // 응답을 받아서 화면에 표시
+//            val result = response.body()?.string()
+//            println(result) // => predict
+//            Handler(Looper.getMainLooper()).post {
+//                Toast.makeText(context, result, Toast.LENGTH_SHORT).show()
+//                predictValue = result ?: ""
+//            }
+//        }
+//    })
 
 
     Column(
@@ -130,6 +138,7 @@ fun InputScreen(navController: NavController) {
     ) {
         // 상단 여백
         Spacer(modifier = Modifier.height(90.dp))
+
         // 입력 페이지에 나타날 이미지 공간
         Image(
             bitmap = bitmap?.asImageBitmap() ?: defaultImageBitmap, contentDescription = null,
@@ -167,8 +176,9 @@ fun InputScreen(navController: NavController) {
         GetiButton(
             onclick = {
                 if (selectUri != null) {
-                    // 버튼 클릭시 OutputScreen으로 menuName 전달하면서 이동 -> 추후에 selectUri넘겨주는 로직으로 변경할 예정
-                    navController.navigate("output/${selectUri.toString()}")
+                    val encodedUri = URLEncoder.encode(selectUri.toString(), "UTF-8")
+                    // 버튼 클릭시 OutputScreen으로 menuName 전달하면서 이동 -> 추후에 selectUri 넘겨주는 로직으로 변경할 예정
+                    navController.navigate("loading/${encodedUri}")
                 }
             },
             text = "예측하기"

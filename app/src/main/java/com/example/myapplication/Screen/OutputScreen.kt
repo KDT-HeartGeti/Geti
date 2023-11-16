@@ -44,10 +44,10 @@ import java.io.InputStream
 
 @SuppressLint("CoroutineCreationDuringComposition")
 @Composable
-fun OutputScreen(navController: NavController, predictValue: String, selectUri: String) {
+fun OutputScreen(navController: NavController, predictValue: String) {
     val foodNutrient = getFoodNutrientByName(predictValue)
     val context = LocalContext.current
-    val bitmap: Bitmap? = Uri.parse(selectUri)?.let { uriToBitmap(it, context) }
+//    val bitmap: Bitmap? = Uri.parse(selectUri)?.let { uriToBitmap(it, context) }
     val resources = context.resources
     val defaultImageBitmap =
         BitmapFactory.decodeResource(resources, R.drawable.no_image).asImageBitmap()
@@ -59,7 +59,9 @@ fun OutputScreen(navController: NavController, predictValue: String, selectUri: 
     ) {
         Row(
             horizontalArrangement = Arrangement.Start,
-            modifier = Modifier.fillMaxWidth().height(10.dp)
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(10.dp)
         ) {
             // 뒤로 가기
             IconButton(
@@ -75,7 +77,9 @@ fun OutputScreen(navController: NavController, predictValue: String, selectUri: 
         Spacer(modifier = Modifier.height(40.dp))
         // 해당 음식 이미지
         Image(
-            bitmap = bitmap?.asImageBitmap() ?: defaultImageBitmap, contentDescription = null,
+            painter = painterResource(id = R.drawable.no_image),
+            contentDescription = "",
+//            bitmap = bitmap?.asImageBitmap() ?: defaultImageBitmap, contentDescription = null,
             contentScale = ContentScale.Crop,
             modifier = Modifier.size(300.dp)
         )
