@@ -17,6 +17,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import okhttp3.MediaType
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
 import okhttp3.OkHttpClient
 import okhttp3.Request
@@ -38,7 +39,7 @@ fun LoadingScreen(navController: NavController, selectUri: String) {
 
     suspend fun UploadImage(imageUri: Uri): String? = withContext(Dispatchers.IO)  {
         // navDeepLink
-        val url = "http://127.0.0.1:5000/prediction"
+        val url = "http://192.168.0.31:5000/prediction"
         val client = OkHttpClient()
 
         val inputStream = context.contentResolver.openInputStream(imageUri)
@@ -47,9 +48,9 @@ fun LoadingScreen(navController: NavController, selectUri: String) {
         val requestBody = MultipartBody.Builder()
             .setType(MultipartBody.FORM)
             .addFormDataPart(
-                "image",
-                "image.png",
-                RequestBody.create(MediaType.parse("image/*"), file)
+                "img",
+                "img.jpg",
+                RequestBody.create("img/*".toMediaTypeOrNull(), file)
             )
             .build()
 
@@ -65,7 +66,7 @@ fun LoadingScreen(navController: NavController, selectUri: String) {
 
             if (response.isSuccessful) {
                 // Image uploaded successfully
-                val responseBody = response.body()?.string()
+                val responseBody = response.body?.string()
 
                 val jsonObject = JSONObject(responseBody)
                 prediction = jsonObject.getString("prediction")
@@ -85,9 +86,9 @@ fun LoadingScreen(navController: NavController, selectUri: String) {
         coroutineScope.launch {
             val predictValue = UploadImage(Uri.parse(selectedUri))
             if (predictValue != null) {
-                var dataList = mutableListOf<String>()
-                dataList.add(predictValue)
-                dataList.add(selectUri)
+//                var dataList = mutableListOf<String>()
+//                dataList.add(predictValue)
+//                dataList.add(selectUri)
                 navController.navigate("output/${predictValue}")
             }
         }

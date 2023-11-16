@@ -1,6 +1,7 @@
 package com.example.myapplication.network
 
 import okhttp3.*
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import java.io.File
 import java.io.IOException
 
@@ -10,7 +11,7 @@ fun post(url: String, file: File, callback: Callback): Call {
     val requestBody = MultipartBody.Builder()
         .setType(MultipartBody.FORM)
         .addFormDataPart("file", file.name,
-            RequestBody.create(MediaType.parse("image/*"), file))
+            RequestBody.create("img/*".toMediaTypeOrNull(), file))
         .build()
 
     val request = Request.Builder()
@@ -24,8 +25,8 @@ fun post(url: String, file: File, callback: Callback): Call {
 }
 
 fun main() {
-    val file = File("path/to/your/image.jpg")
-    post("http://127.0.0.1:5000/predict", file, object : Callback {
+    val file = File("path/to/your/img.jpg")
+    post("http://192.168.0.31:5000/prediction", file, object : Callback {
         override fun onFailure(call: Call, e: IOException) {
             e.printStackTrace()
         }
@@ -36,7 +37,7 @@ fun main() {
             }
 
             // 여기에서 응답을 처리합니다.
-            println(response.body()?.string())
+            println(response.body?.string())
         }
     })
 }
