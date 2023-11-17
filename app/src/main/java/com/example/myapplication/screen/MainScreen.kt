@@ -1,4 +1,4 @@
-package com.example.myapplication.Screen
+package com.example.myapplication.screen
 
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory

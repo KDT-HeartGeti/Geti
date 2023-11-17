@@ -11,8 +11,8 @@ import androidx.compose.ui.graphics.Color
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.example.myapplication.Screen.InputScreen
 import com.example.myapplication.data.NavScreen
+import com.example.myapplication.screen.InputScreen
 import com.example.myapplication.screen.LoadingScreen
 import com.example.myapplication.screen.OutputScreen
 import com.example.myapplication.ui.theme.MyApplicationTheme
