@@ -1,11 +1,8 @@
-package com.example.myapplication.Screen
+package com.example.myapplication.screen
 
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.net.Uri
-import android.os.Handler
-import android.os.Looper
-import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
@@ -40,8 +37,8 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
-import com.example.myapplication.Component.uriToBitmap
 import com.example.myapplication.component.bitmapToUri
+import com.example.myapplication.Component.uriToBitmap
 import com.example.myapplication.R
 //import com.example.myapplication.network.post
 import java.net.URLEncoder
