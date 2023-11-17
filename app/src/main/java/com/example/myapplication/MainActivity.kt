@@ -44,10 +44,19 @@ class MainActivity : ComponentActivity() {
                                 it.arguments?.getString("encodedUri") ?: ""
                             )
                         }
+//                        composable("output/{predictValue}/{selectedUri}") {
+//                            OutputScreen(
+//                                navController,
+//                                it.arguments?.getString("predictValue") ?: "",
+//                                it.arguments?.getString("selectedUri") ?: ""
+//                            )
+//                        }
                         composable(NavScreen.Output.route) {
                             OutputScreen(
                                 navController,
-                                it.arguments?.getString("predictValue") ?: "",
+//                                it.arguments?.getString("predictValue") ?: "",
+//                                it.arguments?.getString("selectedUri") ?: "",
+                                it.arguments?.getString("predictValue") ?: ""
 //                                selectUri = navController.previousBackStackEntry?.arguments?.getString("selectUri") ?: ""
                             )
                         }
