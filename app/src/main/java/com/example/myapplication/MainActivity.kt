@@ -1,11 +1,9 @@
 package com.example.myapplication
 
-import android.net.Uri
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
@@ -13,10 +11,9 @@ import androidx.compose.ui.graphics.Color
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.example.myapplication.Screen.InputScreen
-import com.example.myapplication.Screen.LoadingScreen
-import com.example.myapplication.Screen.MainScreen
-import com.example.myapplication.Screen.OutputScreen
+import com.example.myapplication.screen.InputScreen
+import com.example.myapplication.screen.LoadingScreen
+import com.example.myapplication.screen.OutputScreen
 import com.example.myapplication.ui.theme.MyApplicationTheme
 
 

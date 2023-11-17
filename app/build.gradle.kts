@@ -56,7 +56,7 @@ android {
 
 dependencies {
 
-    implementation("androidx.core:core-ktx:1.9.0")
+    implementation("androidx.core:core-ktx:1.12.0")
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.6.2")
     implementation("androidx.activity:activity-compose:1.8.0")
     implementation(platform("androidx.compose:compose-bom:2023.03.00"))
@@ -75,8 +75,8 @@ dependencies {
     androidTestImplementation(platform("androidx.compose:compose-bom:2023.03.00"))
     debugImplementation("androidx.compose.ui:ui-tooling")
     debugImplementation("androidx.compose.ui:ui-test-manifest")
-    val nav_version = "2.5.3"
-    implementation("androidx.navigation:navigation-compose:$nav_version")
+    val navVersion = "2.7.5"
+    implementation("androidx.navigation:navigation-compose:$navVersion")
     // implementation("org.tensorflow:tensorflow-lite-task-vision-play-services:0.4.2.1")
     // Tensorflow Lite dependencies for Google Play services
     // Optional: include Tensorflow Lite Support Library
