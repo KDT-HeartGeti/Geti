@@ -1,4 +1,4 @@
-package com.example.myapplication.Component
+package com.example.myapplication.component
 
 import android.content.ContentValues
 import android.content.Context
@@ -23,6 +23,5 @@ fun bitmapToUri(context: Context, bitmap: Bitmap): Uri? {
             }
         }
     }
-
     return uri
 }

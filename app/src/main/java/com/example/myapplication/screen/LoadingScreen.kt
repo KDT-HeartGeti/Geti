@@ -1,4 +1,4 @@
-package com.example.myapplication.Screen
+package com.example.myapplication.screen
 
 import android.annotation.SuppressLint
 import android.net.Uri
@@ -6,17 +6,13 @@ import android.util.Log
 import androidx.compose.foundation.layout.Column
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.NavController
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import okhttp3.MediaType
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
 import okhttp3.OkHttpClient
 import okhttp3.Request
@@ -24,19 +20,19 @@ import okhttp3.RequestBody
 import org.json.JSONObject
 import java.io.IOException
 import java.net.URLDecoder
+import java.net.URLEncoder
 
 
 @SuppressLint("CoroutineCreationDuringComposition")
 @Composable
-fun LoadingScreen(navController: NavController, selectUri: String) {
+fun LoadingScreen(navController: NavController, encodedUri: String) {
+    val encodedUri1 = URLEncoder.encode(encodedUri, "UTF-8")
     val coroutineScope = rememberCoroutineScope()
-    // 맵핑한 함수에서 해당 데이터 클래스의 value값 가져와서 변수에 할당
     val context = LocalContext.current
-    val selectedUri = URLDecoder.decode(selectUri, "UTF-8")
+    val selectedUri = URLDecoder.decode(encodedUri, "UTF-8")
 
-    suspend fun UploadImage(imageUri: Uri): String? = withContext(Dispatchers.IO)  {
-        // navDeepLink
-        val url = "http://127.0.0.1:5000/prediction"
+    suspend fun uploadImage(imageUri: Uri): String? = withContext(Dispatchers.IO)  {
+        val url = "http://192.168.1.58:5000/prediction"
         val client = OkHttpClient()
 
         val inputStream = context.contentResolver.openInputStream(imageUri)
@@ -45,9 +41,9 @@ fun LoadingScreen(navController: NavController, selectUri: String) {
         val requestBody = MultipartBody.Builder()
             .setType(MultipartBody.FORM)
             .addFormDataPart(
-                "image",
-                "image.png",
-                RequestBody.create(MediaType.parse("image/*"), file)
+                "img",
+                "img.jpg",
+                RequestBody.create("img/*".toMediaTypeOrNull(), file)
             )
             .build()
 
@@ -62,8 +58,7 @@ fun LoadingScreen(navController: NavController, selectUri: String) {
             val response = client.newCall(request).execute()
 
             if (response.isSuccessful) {
-                // Image uploaded successfully
-                val responseBody = response.body()?.string()
+                val responseBody = response.body?.string()
 
                 val jsonObject = JSONObject(responseBody)
                 prediction = jsonObject.getString("prediction")
@@ -81,12 +76,14 @@ fun LoadingScreen(navController: NavController, selectUri: String) {
 
     if(selectedUri != null) {
         coroutineScope.launch {
-            val predictValue = UploadImage(Uri.parse(selectedUri))
+            val predictValue = uploadImage(Uri.parse(selectedUri))
             if (predictValue != null) {
-                var dataList = mutableListOf<String>()
-                dataList.add(predictValue)
-                dataList.add(selectUri)
-                navController.navigate("output/${predictValue}")
+//                var dataList = mutableListOf(predictValue, selectedUri)
+//                dataList.add(predictValue)
+//                dataList.add(selectedUri)
+                navController.navigate(
+                    "output/${predictValue}/${encodedUri1}"
+                )
             }
         }
     }

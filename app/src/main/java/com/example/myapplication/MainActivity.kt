@@ -11,7 +11,8 @@ import androidx.compose.ui.graphics.Color
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.example.myapplication.screen.InputScreen
+import com.example.myapplication.Screen.InputScreen
+import com.example.myapplication.data.NavScreen
 import com.example.myapplication.screen.LoadingScreen
 import com.example.myapplication.screen.OutputScreen
 import com.example.myapplication.ui.theme.MyApplicationTheme
@@ -34,7 +35,6 @@ class MainActivity : ComponentActivity() {
                         NavScreen.Input.route
                     }
 
-
                     // navigation
                     NavHost(navController = navController, startDestination = startDestination) {
                         composable(NavScreen.Input.route) { InputScreen(navController) }
@@ -44,6 +44,18 @@ class MainActivity : ComponentActivity() {
                                 it.arguments?.getString("encodedUri") ?: ""
                             )
                         }
+                        composable(NavScreen.Output.route) {
+                            val predictValue = it.arguments?.getString("predictValue") ?: ""
+                            val selectedUri = it.arguments?.getString("encodedUri") ?: ""
+                            OutputScreen(navController, predictValue, selectedUri)
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
 //                        composable("output/{predictValue}/{selectedUri}") {
 //                            OutputScreen(
 //                                navController,
@@ -51,19 +63,12 @@ class MainActivity : ComponentActivity() {
 //                                it.arguments?.getString("selectedUri") ?: ""
 //                            )
 //                        }
-                        composable(NavScreen.Output.route) {
-                            OutputScreen(
-                                navController,
-//                                it.arguments?.getString("predictValue") ?: "",
-//                                it.arguments?.getString("selectedUri") ?: "",
-                                it.arguments?.getString("predictValue") ?: ""
-//                                selectUri = navController.previousBackStackEntry?.arguments?.getString("selectUri") ?: ""
-                            )
-                        }
-                    }
 
-                }
-            }
-        }
-    }
-}
+
+//                            OutputScreen(
+//                                navController,
+////                                it.arguments?.getString("predictValue") ?: "",
+////                                it.arguments?.getString("selectedUri") ?: "",
+//                                it.arguments?.getString("predictValue") ?: "",
+////                                selectUri = navController.previousBackStackEntry?.arguments?.getString("selectUri") ?: ""
+//                            )

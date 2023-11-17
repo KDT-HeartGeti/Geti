@@ -40,14 +40,10 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
-import com.example.myapplication.Component.bitmapToUri
 import com.example.myapplication.Component.uriToBitmap
+import com.example.myapplication.component.bitmapToUri
 import com.example.myapplication.R
-import com.example.myapplication.network.post
-
-import java.io.File
-import java.io.FileOutputStream
-import java.io.IOException
+//import com.example.myapplication.network.post
 import java.net.URLEncoder
 
 
@@ -95,39 +91,6 @@ fun InputScreen(navController: NavController) {
 
     var menu by remember { mutableStateOf("") }
     var menuName: String? = null
-
-//    // 서버에 이미지 보내고 응답 받기
-//    val file = File(context.cacheDir, "image.jpg")
-//    file.createNewFile()
-//
-//    val fos = FileOutputStream(file)
-//    bitmap?.compress(Bitmap.CompressFormat.JPEG, 100, fos)
-//    fos.close()
-//
-//    var predictValue by remember {
-//        mutableStateOf("")
-//    }
-//
-//    post("http://192.168.1.59:5000/prediction", file, object : Callback {
-//        override fun onFailure(call: Call, e: IOException) {
-//            e.printStackTrace()
-//        }
-//
-//        override fun onResponse(call: Call, response: Response) {
-//            if (!response.isSuccessful) {
-//                throw IOException("왜인지 모르겠는데 응답이.. $response")
-//            }
-//
-//            // 응답을 받아서 화면에 표시
-//            val result = response.body()?.string()
-//            println(result) // => predict
-//            Handler(Looper.getMainLooper()).post {
-//                Toast.makeText(context, result, Toast.LENGTH_SHORT).show()
-//                predictValue = result ?: ""
-//            }
-//        }
-//    })
-
 
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -229,3 +192,35 @@ fun GetiButton(onclick: () -> Unit, text: String) {
 //        InputScreen()
 //    }
 //}
+
+//    // 서버에 이미지 보내고 응답 받기
+//    val file = File(context.cacheDir, "image.jpg")
+//    file.createNewFile()
+//
+//    val fos = FileOutputStream(file)
+//    bitmap?.compress(Bitmap.CompressFormat.JPEG, 100, fos)
+//    fos.close()
+//
+//    var predictValue by remember {
+//        mutableStateOf("")
+//    }
+//
+//    post("http://192.168.1.59:5000/prediction", file, object : Callback {
+//        override fun onFailure(call: Call, e: IOException) {
+//            e.printStackTrace()
+//        }
+//
+//        override fun onResponse(call: Call, response: Response) {
+//            if (!response.isSuccessful) {
+//                throw IOException("왜인지 모르겠는데 응답이.. $response")
+//            }
+//
+//            // 응답을 받아서 화면에 표시
+//            val result = response.body()?.string()
+//            println(result) // => predict
+//            Handler(Looper.getMainLooper()).post {
+//                Toast.makeText(context, result, Toast.LENGTH_SHORT).show()
+//                predictValue = result ?: ""
+//            }
+//        }
+//    })

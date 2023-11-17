@@ -1,4 +1,4 @@
-package com.example.myapplication.Screen
+package com.example.myapplication.screen
 
 import android.annotation.SuppressLint
 import android.graphics.Bitmap
@@ -6,6 +6,7 @@ import android.graphics.BitmapFactory
 import android.net.Uri
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -44,10 +45,13 @@ import java.io.InputStream
 
 @SuppressLint("CoroutineCreationDuringComposition")
 @Composable
-fun OutputScreen(navController: NavController, predictValue: String) {
+fun OutputScreen(navController: NavController, predictValue: String, selectedUri: String) {
     val foodNutrient = getFoodNutrientByName(predictValue)
     val context = LocalContext.current
-    context.resources
+    val bitmap: Bitmap? = Uri.parse(selectedUri)?.let { uriToBitmap(it, context) }
+    val resources = context.resources
+    val defaultImageBitmap =
+        BitmapFactory.decodeResource(resources, R.drawable.no_image).asImageBitmap()
 
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -58,14 +62,18 @@ fun OutputScreen(navController: NavController, predictValue: String) {
             horizontalArrangement = Arrangement.Start,
             modifier = Modifier
                 .fillMaxWidth()
-                .height(10.dp)
+                .height(20.dp)
         ) {
             // 뒤로 가기
             IconButton(
-                onClick = { navController.popBackStack() }
+                onClick = {
+                    navController.popBackStack()
+                    navController.popBackStack()
+
+                }
             ) {
                 Icon(
-                    painter = painterResource(id = android.R.drawable.ic_menu_revert),
+                    painter = painterResource(id = R.drawable.goback),
                     contentDescription = "Go back",
                 )
             }
@@ -74,11 +82,13 @@ fun OutputScreen(navController: NavController, predictValue: String) {
         Spacer(modifier = Modifier.height(40.dp))
         // 해당 음식 이미지
         Image(
-            painter = painterResource(id = R.drawable.no_image),
+            // painter = painterResource(id = R.drawable.pizza),
+            bitmap = bitmap?.asImageBitmap() ?: defaultImageBitmap,
             contentDescription = "",
-//            bitmap = bitmap?.asImageBitmap() ?: defaultImageBitmap, contentDescription = null,
             contentScale = ContentScale.Crop,
-            modifier = Modifier.size(300.dp)
+            modifier = Modifier
+                .size(300.dp)
+                .border(width = 3.dp, Color.Gray)
         )
         // 이미지와 이름 여백
         Spacer(modifier = Modifier.height(15.dp))
