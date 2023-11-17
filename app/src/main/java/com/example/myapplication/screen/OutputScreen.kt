@@ -35,7 +35,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
-import com.example.myapplication.Component.uriToBitmap
+import com.example.myapplication.component.uriToBitmap
 import com.example.myapplication.R
 import com.example.myapplication.database.getFoodNutrientByName
 import java.io.File

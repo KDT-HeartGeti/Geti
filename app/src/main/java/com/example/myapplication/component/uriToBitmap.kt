@@ -1,4 +1,4 @@
-package com.example.myapplication.Component
+package com.example.myapplication.component
 
 import android.content.Context
 import android.graphics.Bitmap
