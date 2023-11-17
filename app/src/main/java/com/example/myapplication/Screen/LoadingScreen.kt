@@ -39,7 +39,8 @@ fun LoadingScreen(navController: NavController, selectUri: String) {
 
     suspend fun UploadImage(imageUri: Uri): String? = withContext(Dispatchers.IO)  {
         // navDeepLink
-        val url = "http://192.168.0.31:5000/prediction"
+//        val url = "http://192.168.0.31:5000/prediction"
+        val url = "http://192.168.1.59:5000/prediction"
         val client = OkHttpClient()
 
         val inputStream = context.contentResolver.openInputStream(imageUri)
@@ -86,10 +87,14 @@ fun LoadingScreen(navController: NavController, selectUri: String) {
         coroutineScope.launch {
             val predictValue = UploadImage(Uri.parse(selectedUri))
             if (predictValue != null) {
-//                var dataList = mutableListOf<String>()
+//                var dataList = mutableListOf(predictValue, selectedUri)
 //                dataList.add(predictValue)
-//                dataList.add(selectUri)
-                navController.navigate("output/${predictValue}")
+//                dataList.add(selectedUri)
+                navController.navigate(
+//                    "output/${predictValue}/${selectedUri}"
+                    "output/${predictValue}"
+
+                )
             }
         }
     }

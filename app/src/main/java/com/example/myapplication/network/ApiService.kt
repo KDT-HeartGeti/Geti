@@ -26,7 +26,8 @@ fun post(url: String, file: File, callback: Callback): Call {
 
 fun main() {
     val file = File("path/to/your/img.jpg")
-    post("http://192.168.0.31:5000/prediction", file, object : Callback {
+    // http://192.168.0.31:5000/prediction
+    post("http://192.168.1.59:5000/prediction", file, object : Callback {
         override fun onFailure(call: Call, e: IOException) {
             e.printStackTrace()
         }

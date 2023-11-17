@@ -6,6 +6,7 @@ import android.graphics.BitmapFactory
 import android.net.Uri
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -40,14 +41,18 @@ import com.example.myapplication.database.getFoodNutrientByName
 import java.io.File
 import java.io.FileOutputStream
 import java.io.InputStream
+import java.net.URLDecoder
 
 
 @SuppressLint("CoroutineCreationDuringComposition")
 @Composable
+// selectedUri: String
 fun OutputScreen(navController: NavController, predictValue: String) {
+//fun OutputScreen(navController: NavController, dataList: MutableList<String>) {
     val foodNutrient = getFoodNutrientByName(predictValue)
     val context = LocalContext.current
-//    val bitmap: Bitmap? = Uri.parse(selectUri)?.let { uriToBitmap(it, context) }
+//    val selectedUri = URLDecoder.decode(selectUri, "UTF-8")
+//    val bitmap: Bitmap? = Uri.parse(dataList[1])?.let { uriToBitmap(it, context) }
     val resources = context.resources
     val defaultImageBitmap =
         BitmapFactory.decodeResource(resources, R.drawable.no_image).asImageBitmap()
@@ -65,7 +70,10 @@ fun OutputScreen(navController: NavController, predictValue: String) {
         ) {
             // 뒤로 가기
             IconButton(
-                onClick = { navController.popBackStack() }
+                onClick = {
+                    navController.popBackStack()
+                    navController.popBackStack()
+                }
             ) {
                 Icon(
                     painter = painterResource(id = android.R.drawable.ic_menu_revert),
@@ -81,7 +89,9 @@ fun OutputScreen(navController: NavController, predictValue: String) {
             contentDescription = "",
 //            bitmap = bitmap?.asImageBitmap() ?: defaultImageBitmap, contentDescription = null,
             contentScale = ContentScale.Crop,
-            modifier = Modifier.size(300.dp)
+            modifier = Modifier
+                .size(300.dp)
+                .border(width = 3.dp, Color.Gray)
         )
         // 이미지와 이름 여백
         Spacer(modifier = Modifier.height(15.dp))

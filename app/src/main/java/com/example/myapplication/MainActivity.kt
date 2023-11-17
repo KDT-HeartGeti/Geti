@@ -57,7 +57,9 @@ class MainActivity : ComponentActivity() {
                         composable(NavScreen.Output.route) {
                             OutputScreen(
                                 navController,
-                                it.arguments?.getString("predictValue") ?: "",
+//                                it.arguments?.getString("predictValue") ?: "",
+//                                it.arguments?.getString("selectedUri") ?: "",
+                                it.arguments?.getString("predictValue") ?: ""
 //                                selectUri = navController.previousBackStackEntry?.arguments?.getString("selectUri") ?: ""
                             )
                         }

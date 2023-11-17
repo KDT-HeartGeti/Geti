@@ -5,5 +5,6 @@ sealed class NavScreen(val route: String) {
     object Loading : NavScreen("loading/{encodedUri}")
 //    data class Output (
 //        val predictValue:String, val selectedUri: String) : NavScreen("output/${predictValue}/${selectedUri}")
-    object Output : NavScreen("output/{predictValue}")
+//    object Output : NavScreen("output/{predictValue}/{selectedUri}")
+object Output : NavScreen("output/{predictValue}")
 }
