@@ -141,6 +141,15 @@ fun InputScreen(navController: NavController) {
             },
             text = "예측하기"
         )
+
+        Button(
+            onClick = {
+                navController.navigate("recs")
+            }
+        ) {
+            Text(text = "당뇨환자 건강기능식품 추천")
+        }
+
         Spacer(modifier = Modifier.height(25.dp))
         Row {
             // 메뉴 이름 작성 TextField
