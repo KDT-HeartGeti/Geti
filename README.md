@@ -1,4 +1,5 @@
-<img width="1512" alt="banner" src="https://www.canva.com/design/DAF0hvhrxO0/-w8lZ4c4RJcx-CwLBU1msA/view?utm_content=DAF0hvhrxO0&utm_campaign=designshare&utm_medium=link&utm_source=editor">
+<img width="1512" alt="banner" src="">
+![Neon Modern Black Friday Banner](https://github.com/KDT-HeartGeti/Geti/assets/71699054/9e0d90f3-d164-44d4-bec5-608e9a00f3b1)
 
 # HeartGeti2023 App
 
