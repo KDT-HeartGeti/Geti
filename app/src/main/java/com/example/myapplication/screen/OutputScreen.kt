@@ -1,7 +1,12 @@
 package com.example.myapplication.Screen
 
+import android.annotation.SuppressLint
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
+import android.net.Uri
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -14,43 +19,40 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.material3.Button
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
-import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import com.example.myapplication.component.uriToBitmap
 import com.example.myapplication.R
-import com.example.myapplication.data.FoodNutrient
 import com.example.myapplication.database.getFoodNutrientByName
+import java.io.File
+import java.io.FileOutputStream
+import java.io.InputStream
 
-//@Preview
-//@Composable
-//fun previewSurfaceOut() {
-//    Surface(
-//        Modifier.fillMaxSize()
-//    ) {
-//        OutputScreen()
-//    }
-//}
 
+
+@SuppressLint("CoroutineCreationDuringComposition")
 @Composable
-fun OutputScreen(navController: NavController, menuName: String) {
-    // 맵핑한 함수에서 해당 데이터 클래스의 value값 가져와서 변수에 할당
-    val foodNutrient = getFoodNutrientByName(menuName)
+fun OutputScreen(navController: NavController, predictValue: String, selectedUri: String) {
+    val foodNutrient = getFoodNutrientByName(predictValue)
+    val context = LocalContext.current
+    val bitmap: Bitmap? = Uri.parse(selectedUri)?.let { uriToBitmap(it, context) }
+    val resources = context.resources
+    val defaultImageBitmap =
+        BitmapFactory.decodeResource(resources, R.drawable.no_image).asImageBitmap()
 
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -59,14 +61,20 @@ fun OutputScreen(navController: NavController, menuName: String) {
     ) {
         Row(
             horizontalArrangement = Arrangement.Start,
-            modifier = Modifier.fillMaxWidth().height(10.dp)
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(20.dp)
         ) {
             // 뒤로 가기
             IconButton(
-                onClick = { navController.popBackStack() }
+                onClick = {
+                    navController.popBackStack()
+                    navController.popBackStack()
+
+                }
             ) {
                 Icon(
-                    painter = painterResource(id = android.R.drawable.ic_menu_revert),
+                    painter = painterResource(id = R.drawable.goback),
                     contentDescription = "Go back",
                 )
             }
@@ -75,10 +83,13 @@ fun OutputScreen(navController: NavController, menuName: String) {
         Spacer(modifier = Modifier.height(40.dp))
         // 해당 음식 이미지
         Image(
-            painter = painterResource(id = R.drawable.o_12576),
-            contentDescription = "Food Image",
+            // painter = painterResource(id = R.drawable.pizza),
+            bitmap = bitmap?.asImageBitmap() ?: defaultImageBitmap,
+            contentDescription = "",
             contentScale = ContentScale.Crop,
-            modifier = Modifier.size(300.dp)
+            modifier = Modifier
+                .size(300.dp)
+                .border(width = 3.dp, Color.Gray)
         )
         // 이미지와 이름 여백
         Spacer(modifier = Modifier.height(15.dp))
@@ -208,3 +219,23 @@ fun DangerBox(dangerNum: Int) {
     }
 }
 
+fun createFileFromInputStream(inputStream: InputStream?): File {
+    val file = File.createTempFile("temp", null)
+    inputStream?.use { input ->
+        FileOutputStream(file).use { output ->
+            input.copyTo(output)
+        }
+    }
+    return file
+}
+
+
+//@Preview
+//@Composable
+//fun previewSurfaceOut() {
+//    Surface(
+//        Modifier.fillMaxSize()
+//    ) {
+//        OutputScreen()
+//    }
+//}

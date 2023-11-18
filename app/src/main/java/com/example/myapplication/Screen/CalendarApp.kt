@@ -10,8 +10,8 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ChevronLeft
-import androidx.compose.material.icons.filled.ChevronRight
+import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.filled.ArrowForward
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -94,14 +94,14 @@ fun Header(data: CalendarUiModel,
             onPrevClickListener(data.startDate.date)
         }) {
             Icon(
-                imageVector = Icons.Filled.ChevronLeft, contentDescription = "Back"
+                imageVector = Icons.Filled.ArrowBack, contentDescription = "Back"
             )
         }
         IconButton(onClick = {
             onNextClickListener(data.endDate.date)
         }) {
             Icon(
-                imageVector = Icons.Filled.ChevronRight, contentDescription = "Next"
+                imageVector = Icons.Filled.ArrowForward, contentDescription = "Next"
             )
         }
     }

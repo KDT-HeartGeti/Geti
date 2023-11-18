@@ -1,9 +1,7 @@
-package com.example.myapplication.Component
+package com.example.myapplication.component
 
 import android.content.Context
 import android.graphics.Bitmap
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
 import com.example.myapplication.ml.Model
 import org.tensorflow.lite.DataType
 import org.tensorflow.lite.support.image.ImageProcessor

@@ -1,4 +1,4 @@
-package com.example.myapplication.Screen
+package com.example.myapplication.component
 
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
@@ -29,8 +29,6 @@ import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.myapplication.Component.handleButtonClick
-import com.example.myapplication.Component.uriToBitmap
 import com.example.myapplication.R
 import org.tensorflow.lite.support.common.ops.NormalizeOp
 import org.tensorflow.lite.support.image.ImageProcessor
@@ -54,12 +52,14 @@ fun MainScreen() {
                 takenPhoto = null
             }
         )
+
     val cameraLauncher = // 카메라 이미지 런쳐
         rememberLauncherForActivityResult(contract = ActivityResultContracts.TakePicturePreview(),
             onResult = { photo ->
                 takenPhoto = photo
                 selectUri = null
             })
+
     val bitmap: Bitmap? = selectUri?.let { uriToBitmap(it, context) } ?: takenPhoto
     val resources = context.resources
     val defaultImageBitmap =
