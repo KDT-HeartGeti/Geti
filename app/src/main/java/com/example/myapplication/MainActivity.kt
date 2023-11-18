@@ -20,6 +20,7 @@ import com.example.myapplication.Screen.OutputScreen
 import com.example.myapplication.Screen.RecsScreen
 import com.example.myapplication.Screen.LoadingScreen
 import com.example.myapplication.data.NavScreen
+import com.example.myapplication.ui.theme.Gray200
 import com.example.myapplication.ui.theme.MyApplicationTheme
 
 
@@ -64,7 +65,7 @@ class MainActivity : ComponentActivity() {
                 // A surface container using the 'background' color from the theme
                 Surface(
                     modifier = Modifier.fillMaxSize(),
-                    color = Color.White
+                    color = Gray200
                 ) {
                     // navigation 변수 선언
                     val navController = rememberNavController()
