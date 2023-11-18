@@ -84,7 +84,7 @@ fun LoadingScreen(navController: NavController, encodedUri: String) {
             }
         }
     }
-    
+
     Column {
         Text(text = "Loading...😂😂")
     }
