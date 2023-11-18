@@ -51,11 +51,10 @@
 - Firebase
 - Retrofit 및 OkHttp
 
-## Thanks
+## Thanks [![Hits](https://hits.seeyoufarm.com/api/count/incr/badge.svg?url=https%3A%2F%2Fgithub.com%2FKDT-HeartGeti%2FGeti&count_bg=%2345FFCA&title_bg=%23FFB6D9&icon=&icon_color=%23E7E7E7&title=Heart_Geti&edge_flat=false)](https://hits.seeyoufarm.com)
 
-참여해주신 모든 분들 감사합니다!
-[![Hits](https://hits.seeyoufarm.com/api/count/incr/badge.svg?url=https%3A%2F%2Fgithub.com%2FKDT-HeartGeti%2FGeti&count_bg=%2345FFCA&title_bg=%23FFB6D9&icon=&icon_color=%23E7E7E7&title=Heart_Geti&edge_flat=false)](https://hits.seeyoufarm.com)
-
+- 참여해주신 모든 분들 감사합니다!
 - GitHub : [Contributors](https://github.com/KDT-HeartGeti/Geti/pulse)
 - Designer : SangEun Kim
 - Maintainer : [vmkmym](https://github.com/vmkmym), [21dbwls12](https://github.com/21dbwls12)
+
