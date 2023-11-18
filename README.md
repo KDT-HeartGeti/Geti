@@ -40,12 +40,16 @@
 
 #### Gradle Dependency
 
-AndroidX : Core-KTX, Lifecycle, Activity-Compose, Compose UI
-TensorFlow Lite
-JUnit, Espresso, Compose UI Test
-Android Navigation 
-Firebase
-Retrofit 및 OkHttp
+- AndroidX
+  - Core-KTX
+  - Lifecycle
+  - Activity-Compose
+  - Compose UI
+- TensorFlow Lite
+- JUnit, Espresso, Compose UI Test
+- Android Navigation 
+- Firebase
+- Retrofit 및 OkHttp
 
 ## Thanks
 
