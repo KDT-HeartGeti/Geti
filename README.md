@@ -2,18 +2,12 @@
 
 # HeartGeti2023 App
 
-Hello We are HeartGeti!
 2030 당뇨병 환자들을 위한 식단 추천 프로젝트입니다.
-
-## Guide
 
 
 ## Design
 
 [Figma](https://www.figma.com/file/8wNRSgyRedQVYhgwyw0rHX/Untitled?type=design&node-id=11%3A69&mode=design&t=YUz0sxtb9nUAqrLp-1)에서 디자인을 확인하실 수 있습니다.
-
-## Development
-
 
 
 ### Required
