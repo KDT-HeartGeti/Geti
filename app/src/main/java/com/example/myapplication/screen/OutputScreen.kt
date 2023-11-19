@@ -19,10 +19,16 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentHeight
+import androidx.compose.foundation.layout.wrapContentWidth
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.AccountCircle
 import androidx.compose.material.icons.filled.AddCircle
 import androidx.compose.material.icons.filled.Menu
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -36,6 +42,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.graphics.painter.Painter
@@ -52,6 +59,13 @@ import androidx.navigation.NavController
 import com.example.myapplication.Component.uriToBitmap
 import com.example.myapplication.R
 import com.example.myapplication.database.getFoodNutrientByName
+import com.example.myapplication.ui.theme.Gray200
+import com.example.myapplication.ui.theme.Gray400
+import com.example.myapplication.ui.theme.Gray50
+import com.example.myapplication.ui.theme.Gray600
+import com.example.myapplication.ui.theme.Gray900
+import com.example.myapplication.ui.theme.NeonBlue
+import com.example.myapplication.ui.theme.NeonRed
 import java.io.File
 import java.io.FileOutputStream
 import java.io.InputStream
@@ -62,20 +76,18 @@ import java.io.InputStream
 fun OutputActivity(navController: NavController, predictValue: String, selectedUri: String) {
     var isToggled by remember { mutableStateOf(false) }
 
-    val toggleImage: Int = if (isToggled) {
-        R.drawable.toggle_on
-    } else {
-        R.drawable.toggle_off
+    val toggleImage by remember(isToggled) {
+        mutableStateOf(if (isToggled) R.drawable.toggle_on_svgrepo_com else R.drawable.toggle_off_svgrepo_com)
     }
 
     Scaffold(
         topBar = {
             TopBar(
-                title = "홍길동",
+                title = "김상은",
                 navigationIcon = {
                     IconButton(onClick = { /* doSomething() */ }) {
                         Icon(
-                            imageVector = Icons.Filled.Menu,
+                            imageVector = Icons.Filled.AccountCircle,
                             contentDescription = "프로필 사진"
                         )
                     }
@@ -86,7 +98,8 @@ fun OutputActivity(navController: NavController, predictValue: String, selectedU
                     ) {
                         Icon(
                             ImageVector.vectorResource(id = toggleImage),
-                            contentDescription = "토글 아이콘"
+                            contentDescription = "토글 아이콘",
+                            tint = if (isToggled) Gray400 else NeonBlue
                         )
                     }
                 }
@@ -104,13 +117,15 @@ fun OutputActivity(navController: NavController, predictValue: String, selectedU
                         IconButton(
                             onClick = { navController.navigate("calender") },
                             modifier = Modifier
-                                .size(width = 80.dp, height = 78.dp)
-                                .padding(start = 8.dp, top = 8.dp, end = 8.dp, bottom = 8.dp)
+                                .size(width = 100.dp, height = 100.dp)
+                                .padding(start = 14.dp, top = 8.dp, end = 14.dp, bottom = 8.dp)
                         ) {
                             Icon(
                                 imageVector = ImageVector.vectorResource(R.drawable.calender),
                                 contentDescription = "내 기록 아이콘 (캘린더)",
-                                modifier = Modifier.fillMaxSize()
+                                modifier = Modifier
+                                    .size(width = 30.dp, height = 30.dp)
+
                             )
                         }
                     },
@@ -130,7 +145,7 @@ fun OutputActivity(navController: NavController, predictValue: String, selectedU
                     },
                     actionIcon2 = {
                         IconButton(
-                            onClick = { /* doSomething() */},
+                            onClick = { /* doSomething() */ },
                             modifier = Modifier
                                 .size(width = 80.dp, height = 78.dp)
                                 .padding(start = 8.dp, top = 8.dp, end = 8.dp, bottom = 8.dp)
@@ -144,7 +159,7 @@ fun OutputActivity(navController: NavController, predictValue: String, selectedU
                     },
                     actionIcon3 = {
                         IconButton(
-                            onClick = { /* doSomething() */},
+                            onClick = { navController.navigate("state") },
                             modifier = Modifier
                                 .size(width = 80.dp, height = 78.dp)
                                 .padding(start = 8.dp, top = 8.dp, end = 8.dp, bottom = 8.dp)
@@ -166,6 +181,7 @@ fun OutputActivity(navController: NavController, predictValue: String, selectedU
                 modifier = Modifier
                     .fillMaxSize()
                     .padding(innerPadding)
+                    .background(Gray50)
             ) {
                 OutputScreen(navController, predictValue, selectedUri)
             }
@@ -183,127 +199,211 @@ fun OutputScreen(navController: NavController, predictValue: String, selectedUri
     val defaultImageBitmap =
         BitmapFactory.decodeResource(resources, R.drawable.no_image).asImageBitmap()
 
-    Row(
-        horizontalArrangement = Arrangement.Start,
+    LazyColumn(
         modifier = Modifier
-            .fillMaxWidth()
-            .height(20.dp)
+            .fillMaxSize()
+            .padding(start = 20.dp, end = 20.dp),
+        horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        // 뒤로 가기
-        IconButton(
-            onClick = {
-                navController.popBackStack()
-                navController.popBackStack()
-
+        item {
+            Spacer(modifier = Modifier.height(24.dp))
+            Image(
+                // painter = painterResource(id = R.drawable.pizza),
+                bitmap = bitmap?.asImageBitmap() ?: defaultImageBitmap, contentDescription = "",
+                contentScale = ContentScale.Crop,
+                modifier = Modifier
+                    .size(320.dp)
+                    .clip(RoundedCornerShape(8.dp))
+            )
+            Spacer(modifier = Modifier.height(20.dp))
+        }
+        item {
+            Card(
+                colors = CardDefaults.cardColors(Gray50),
+                modifier = Modifier
+                    .padding(0.dp)
+                    .width(320.dp)
+            ) {
+                Column {
+                    TitleText(text = "메뉴명")
+                    Spacer(modifier = Modifier.height(8.dp))
+                    foodNutrient?.let {
+                        ContentText(text = it.menu)
+                    }
+                }
             }
-        ) {
-            Icon(
-                painter = painterResource(id = R.drawable.goback),
-                contentDescription = "Go back",
-            )
+            Spacer(modifier = Modifier.height(16.dp))
+        }
+        item {
+            Card(
+                colors = CardDefaults.cardColors(Color.White),
+                shape = RoundedCornerShape(12.dp),
+                modifier = Modifier
+                    .width(320.dp)
+            ) {
+                Column(
+                    modifier = Modifier.padding(20.dp)
+                ) {
+                    TitleText(text = "열량")
+                    Spacer(modifier = Modifier.height(10.dp))
+                    Row {
+                        foodNutrient?.let {
+                            ContentText(text = "${it.kcalPer100g}kcal")
+                        }
+                        Spacer(modifier = Modifier.width(6.dp))
+                        SubText(text = "(100g 기준)")
+                    }
+                    Spacer(modifier = Modifier.height(4.dp))
+                    Row {
+                        foodNutrient?.let {
+                            ContentText(text = "${it.kcalPerUnit}kcal")
+                        }
+                        Spacer(modifier = Modifier.width(6.dp))
+                        foodNutrient?.let {
+                            SubText(text = "(${it.foodUnit} ${it.foodUnitGram}g 기준)")
+                        }
+                    }
+                }
+            }
+            Spacer(modifier = Modifier.height(12.dp))
+        }
+        item {
+            Card(
+                colors = CardDefaults.cardColors(Color.White),
+                shape = RoundedCornerShape(12.dp),
+                modifier = Modifier
+                    .width(320.dp)
+            ) {
+                Column(
+                    modifier = Modifier.padding(20.dp)
+                ) {
+                    TitleText(text = "당질")
+                    Spacer(modifier = Modifier.height(10.dp))
+                    Row {
+                        foodNutrient?.let {
+                            ContentText(text = "${it.sugarPer100g}g")
+                        }
+                        Spacer(modifier = Modifier.width(6.dp))
+                        SubText(text = "(100g 기준)")
+                    }
+                    Spacer(modifier = Modifier.height(4.dp))
+                    Row {
+                        foodNutrient?.let {
+                            ContentText(text = "${it.sugarPerUnit}g")
+                        }
+                        Spacer(modifier = Modifier.width(6.dp))
+                        foodNutrient?.let {
+                            SubText(text = "(${it.foodUnit} ${it.foodUnitGram}g 기준)")
+                        }
+                    }
+                }
+            }
+            Spacer(modifier = Modifier.height(12.dp))
+        }
+        item {
+            Card(
+                colors = CardDefaults.cardColors(Color.White),
+                shape = RoundedCornerShape(12.dp),
+                modifier = Modifier
+                    .width(320.dp)
+            ) {
+                Column(
+                    modifier = Modifier.padding(20.dp)
+                ) {
+                    TitleText(text = "위험도")
+                    Spacer(modifier = Modifier.height(12.dp))
+                    foodNutrient?.let {
+                        DangerBox(dangerNum = it.danger)
+                    }
+                    Spacer(modifier = Modifier.height(12.dp))
+                    Text(
+                        text = "숫자가 클수록 위험합니다.",
+                        color = Gray900,
+                        fontSize = 16.sp,
+                        fontWeight = FontWeight.Medium,
+                        textAlign = TextAlign.Center,
+                        modifier = Modifier.fillMaxWidth()
+                    )
+                }
+            }
         }
     }
-    // 상단 여백
-    Spacer(modifier = Modifier.height(40.dp))
-    // 해당 음식 이미지
-    Image(
-        // painter = painterResource(id = R.drawable.pizza),
-        bitmap = bitmap?.asImageBitmap() ?: defaultImageBitmap,
-        contentDescription = "",
-        contentScale = ContentScale.Crop,
-        modifier = Modifier
-            .size(300.dp)
-            .border(width = 3.dp, Color.Gray)
+}
+@Composable
+fun TitleText(text: String) {
+    Text(
+        text = text,
+        fontWeight = FontWeight.Medium,
+        fontSize = 18.sp,
+        color = Gray600,
+        textAlign = TextAlign.Start,
+        modifier = Modifier.wrapContentWidth(align = Alignment.Start)
     )
-    // 이미지와 이름 여백
-    Spacer(modifier = Modifier.height(15.dp))
-    // 음식 이름 Text
-    foodNutrient?.let {
-        FoodInfo(redText = it.menu, blackText = "입니다")
-    }
-    // 정렬을 위한 Column
-    Column(
-        horizontalAlignment = Alignment.Start,
-        modifier = Modifier.width(300.dp)
-    ) {
-        // 음식 성분 정도 Text
-        foodNutrient?.let {
-            NutrientInfo(
-                explainText = "열량 : ",
-                quantityText = it.kcalPer100g,
-                unitText = " kcal (100g 당)"
-            )
-        }
-        foodNutrient?.let {
-            NutrientInfo(
-                explainText = "${it.foodUnit} : ",
-                quantityText = it.kcalPerUnit,
-                unitText = " kcal"
-            )
-        }
-        foodNutrient?.let {
-            NutrientInfo(
-                explainText = "포함 당질 : ",
-                quantityText = it.sugarPer100g,
-                unitText = " g (100g 당)"
-            )
-        }
-        foodNutrient?.let {
-            NutrientInfo(
-                explainText = "${it.foodUnit} : ",
-                quantityText = it.sugarPerUnit,
-                unitText = " g"
-            )
-        }
-    }
-    // 위험도 Text 표시
-//        FoodInfo(redText = "고위험", blackText = " 식품군입니다.")
-    foodNutrient?.let {
-        DangerBox(dangerNum = it.danger)
-    }
 }
 
 @Composable
-fun BlackText(text: String) {
-    Text(text = text, color = Color.Black, fontSize = 15.sp)
+fun SubText(text: String) {
+    Text(
+        text = text,
+        color = Gray600,
+        fontSize = 16.sp,
+        fontWeight = FontWeight.Medium,
+        textAlign = TextAlign.Start,
+        modifier = Modifier.wrapContentWidth(align = Alignment.Start)
+    )
 }
 
 @Composable
-fun GrayText(text: String) {
-    Text(text = text, color = Color.LightGray, fontSize = 15.sp)
+fun ContentText(text: String) {
+    Text(
+        text = text,
+        color = Gray600,
+        fontSize = 24.sp,
+        fontWeight = FontWeight.Bold,
+        textAlign = TextAlign.Start,
+        modifier = Modifier.wrapContentWidth(align = Alignment.Start)
+    )
 }
 
 @Composable
-fun RedText(text: String) {
-    Text(text = text, color = Color.Red, fontSize = 30.sp, fontWeight = FontWeight.Bold)
-}
-
-@Composable
-fun FoodInfo(redText: String, blackText: String) {
-    Row(
-        verticalAlignment = Alignment.Bottom,
-        modifier = Modifier.wrapContentHeight()
-    ) {
-        RedText(text = redText)
-        Spacer(modifier = Modifier.width(6.dp))
-        BlackText(text = blackText)
-    }
-    Spacer(modifier = Modifier.height(15.dp))
-}
-
-@Composable
-fun NutrientInfo(explainText: String, quantityText: Double, unitText: String) {
-    Row(
-        horizontalArrangement = Arrangement.Start,
-        verticalAlignment = Alignment.Bottom,
+fun GetiCard(content: @Composable () -> Unit) {
+    Card(
+        colors = CardDefaults.cardColors(Color.White),
+        shape = RoundedCornerShape(12.dp),
         modifier = Modifier
-            .wrapContentHeight()
+            .padding(20.dp)
+            .width(320.dp)
     ) {
-        GrayText(text = explainText)
-        RedText(text = quantityText.toString())
-        GrayText(text = unitText)
+        content
     }
-    Spacer(modifier = Modifier.height(15.dp))
+}
+
+@Composable
+fun FoodInfo(contentText: Double, subText: String) {
+    Row {
+        ContentText(text = contentText.toString())
+        Spacer(modifier = Modifier.width(6.dp))
+        SubText(text = subText)
+    }
+}
+
+@Composable
+fun NutrientInfo(
+    titleText: String,
+    quantityText100: Double,
+    quantityTextUnit: Double,
+    unitText: String
+) {
+    GetiCard {
+        Column {
+            TitleText(text = titleText)
+            Spacer(modifier = Modifier.height(10.dp))
+            FoodInfo(contentText = quantityText100, subText = "(100g 기준)")
+            Spacer(modifier = Modifier.height(4.dp))
+            FoodInfo(contentText = quantityTextUnit, subText = "(${unitText} 기준)")
+
+        }
+    }
 }
 
 @Composable
@@ -312,22 +412,22 @@ fun DangerBox(dangerNum: Int) {
         modifier = Modifier.fillMaxWidth(),
         horizontalArrangement = Arrangement.Center
     ) {
-        for (i in 5 downTo 1) {
+        for (i in 1..5) {
             Text(
                 text = i.toString(),
-                color = Color.Black,
-                fontSize = 25.sp,
+                color = if (i == dangerNum) Color.White else Gray900,
+                fontSize = 24.sp,
                 textAlign = TextAlign.Center,
                 modifier = Modifier
-                    .size(45.dp)
+                    .size(48.dp)
                     .background(
                         color = if (dangerNum == i) {
                             when (dangerNum) {
-                                1 -> Color.Green
-                                2 -> Color.Blue
-                                3 -> Color.Yellow
-                                4 -> Color.Magenta
-                                5 -> Color.Red
+                                1 -> Color(0xFF9AE74B)
+                                2 -> Color(0xFF9AE74B)
+                                3 -> Color(0xFFF2E96B)
+                                4 -> NeonRed
+                                5 -> NeonRed
                                 else -> Color.Cyan
                             }
                         } else {
@@ -341,24 +441,3 @@ fun DangerBox(dangerNum: Int) {
         }
     }
 }
-
-fun createFileFromInputStream(inputStream: InputStream?): File {
-    val file = File.createTempFile("temp", null)
-    inputStream?.use { input ->
-        FileOutputStream(file).use { output ->
-            input.copyTo(output)
-        }
-    }
-    return file
-}
-
-
-//@Preview
-//@Composable
-//fun previewSurfaceOut() {
-//    Surface(
-//        Modifier.fillMaxSize()
-//    ) {
-//        OutputScreen()
-//    }
-//}

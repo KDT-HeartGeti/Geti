@@ -2,6 +2,7 @@ package com.example.myapplication.data
 
 sealed class NavScreen(val route: String) {
     object Start : NavScreen("start")
+    object MyState : NavScreen("state")
 
     object Recs : NavScreen("recs")
     object Calender : NavScreen("calender")

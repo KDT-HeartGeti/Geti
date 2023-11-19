@@ -21,9 +21,12 @@ import com.example.myapplication.Screen.InputScreen
 import com.example.myapplication.Screen.OutputScreen
 import com.example.myapplication.Screen.RecsScreen
 import com.example.myapplication.Screen.LoadingScreen
+import com.example.myapplication.Screen.MyState
 import com.example.myapplication.Screen.OutputActivity
+import com.example.myapplication.Screen.StartLoadingScreen
 //import com.example.myapplication.Screen.StartLoadingScreen
 import com.example.myapplication.data.NavScreen
+import com.example.myapplication.ui.theme.Gray200
 import com.example.myapplication.ui.theme.MyApplicationTheme
 
 
@@ -69,18 +72,19 @@ class MainActivity : ComponentActivity() {
                 // A surface container using the 'background' color from the theme
                 Surface(
                     modifier = Modifier.fillMaxSize(),
-                    color = Color.White
+                    color = Gray200
                 ) {
                     // navigation 변수 선언
                     val navController = rememberNavController()
                     // 앱 처음 실행시 나올 화면
                     val startDestination = remember {
-                        NavScreen.Input.route
+                        NavScreen.Start.route
                     }
 
                     // navigation
                     NavHost(navController = navController, startDestination = startDestination) {
-//                        composable(NavScreen.Start.route) { StartLoadingScreen(navController)}
+                        composable(NavScreen.Start.route) { StartLoadingScreen(navController)}
+                        composable(NavScreen.MyState.route) { MyState(navController) }
                         composable(NavScreen.Recs.route) { RecsScreen(navController) }
                         composable(NavScreen.Calender.route) { CalendarScreen(navController) }
                         composable(NavScreen.Input.route) { InputActivity(navController) }
@@ -101,20 +105,3 @@ class MainActivity : ComponentActivity() {
         }
     }
 }
-
-//                        composable("output/{predictValue}/{selectedUri}") {
-//                            OutputScreen(
-//                                navController,
-//                                it.arguments?.getString("predictValue") ?: "",
-//                                it.arguments?.getString("selectedUri") ?: ""
-//                            )
-//                        }
-
-
-//                            OutputScreen(
-//                                navController,
-////                                it.arguments?.getString("predictValue") ?: "",
-////                                it.arguments?.getString("selectedUri") ?: "",
-//                                it.arguments?.getString("predictValue") ?: "",
-////                                selectUri = navController.previousBackStackEntry?.arguments?.getString("selectUri") ?: ""
-//                            )
