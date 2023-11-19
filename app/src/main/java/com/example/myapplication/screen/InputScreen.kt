@@ -47,9 +47,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.graphics.painter.Painter
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
@@ -69,9 +71,9 @@ fun InputActivity(navController: NavController) {
     var isToggled by remember { mutableStateOf(false) }
 
     val toggleImage: Painter = if (isToggled) {
-        painterResource(R.drawable.toggle_purple)
+        painterResource(R.drawable.toggle_on)
     } else {
-        painterResource(R.drawable.toggle_gray)
+        painterResource(R.drawable.toggle_off)
     }
 
     Scaffold(
@@ -108,41 +110,57 @@ fun InputActivity(navController: NavController) {
                 BottomBar(
                     navigationIcon = {
                         IconButton(
-                            onClick = { /* doSomething() */}
+                            onClick = { navController.navigate("calender") },
+                            modifier = Modifier
+                                .size(width = 80.dp, height = 78.dp)
+                                .padding(start = 8.dp, top = 8.dp, end = 8.dp, bottom = 8.dp)
                         ) {
                             Icon(
-                                painterResource(id = R.drawable.info_on),
-                                contentDescription = "내 기록 아이콘"
+                                imageVector = ImageVector.vectorResource(R.drawable.calender),
+                                contentDescription = "내 기록 아이콘 (캘린더)",
+                                modifier = Modifier.fillMaxSize()
                             )
                         }
                     },
                     actionIcon1 = {
                         IconButton(
-                            onClick = { /* doSomething() */}
+                            onClick = { navController.navigate("input") },
+                            modifier = Modifier
+                                .size(width = 80.dp, height = 78.dp)
+                                .padding(start = 8.dp, top = 8.dp, end = 8.dp, bottom = 8.dp)
                         ) {
                             Icon(
-                                painterResource(id = R.drawable.info_on),
-                                contentDescription = "영양정보 아이콘"
+                                imageVector = ImageVector.vectorResource(R.drawable.info),
+                                contentDescription = "영양정보 아이콘",
+                                modifier = Modifier.fillMaxSize()
                             )
                         }
                     },
                     actionIcon2 = {
                         IconButton(
-                            onClick = { /* doSomething() */}
+                            onClick = { /* doSomething() */ },
+                            modifier = Modifier
+                                .size(width = 80.dp, height = 78.dp)
+                                .padding(start = 8.dp, top = 8.dp, end = 8.dp, bottom = 8.dp)
                         ) {
                             Icon(
-                                painterResource(id = R.drawable.consult),
-                                contentDescription = "상담 아이콘"
+                                imageVector = ImageVector.vectorResource(R.drawable.consult),
+                                contentDescription = "상담 아이콘",
+                                modifier = Modifier.fillMaxSize()
                             )
                         }
                     },
                     actionIcon3 = {
                         IconButton(
-                            onClick = { /* doSomething() */}
+                            onClick = { /* doSomething() */ },
+                            modifier = Modifier
+                                .size(width = 80.dp, height = 78.dp)
+                                .padding(start = 8.dp, top = 8.dp, end = 8.dp, bottom = 8.dp)
                         ) {
                             Icon(
-                                painterResource(id = R.drawable.state_on),
-                                contentDescription = "내 상태 아이콘"
+                                imageVector = ImageVector.vectorResource(R.drawable.state),
+                                contentDescription = "내 상태 아이콘",
+                                modifier = Modifier.fillMaxSize()
                             )
                         }
                     }
@@ -151,8 +169,6 @@ fun InputActivity(navController: NavController) {
         },
         content = { innerPadding ->
             Column(
-                horizontalAlignment = Alignment.CenterHorizontally,
-                verticalArrangement = Arrangement.Top,
                 modifier = Modifier
                     .fillMaxSize()
                     .padding(innerPadding)
@@ -198,7 +214,7 @@ fun InputScreen(navController: NavController) {
     val cameraLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.TakePicturePreview(),
         onResult = { photo ->
-            if(photo != null) {
+            if (photo != null) {
                 takenPhoto = photo
                 selectUri = bitmapToUri(context, takenPhoto!!)
             }
@@ -207,10 +223,9 @@ fun InputScreen(navController: NavController) {
 
     var menu by remember { mutableStateOf("") }
     var menuName: String? = null
-
-    Column(
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Top,
+    Row(
+        horizontalArrangement = Arrangement.spacedBy(8.dp, Alignment.Start),
+        verticalAlignment = Alignment.Top,
         modifier = Modifier.fillMaxSize()
     ) {
         // 입력 페이지에 나타날 이미지 공간
@@ -257,9 +272,9 @@ fun InputScreen(navController: NavController) {
         IconButton(
             onClick = {
                 navController.navigate("recs")
-        }) {
+            }) {
             Icon(
-                painter = painterResource(id = R.drawable.predict),
+                painter = painterResource(id = R.drawable.banner),
                 contentDescription = "당뇨환자 건강기능식품 추천"
             )
         }
@@ -302,7 +317,7 @@ private fun CameraAndGallery(
         }
     ) {
         Icon(
-            painter = painterResource(id = R.drawable.take_picture),
+            painter = painterResource(id = R.drawable.camera),
             modifier = Modifier
                 .size(width = 156.dp, height = 100.dp),
             contentDescription = "사진 찍기"
@@ -314,7 +329,7 @@ private fun CameraAndGallery(
         }
     ) {
         Icon(
-            painter = painterResource(id = R.drawable.take_picture),
+            painter = painterResource(id = R.drawable.import_image),
             modifier = Modifier
                 .size(width = 156.dp, height = 100.dp),
             contentDescription = "사진 불러오기"
@@ -374,7 +389,7 @@ fun BottomBar(
     actionIcon3: @Composable () -> Unit
 ) {
     BottomAppBar(
-        contentPadding = PaddingValues(horizontal = 10.dp),
+        contentPadding = PaddingValues(horizontal = 0.dp),
         modifier = Modifier.background(MaterialTheme.colorScheme.primary)
     ) {
         Row(

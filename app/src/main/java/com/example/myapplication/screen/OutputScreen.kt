@@ -30,13 +30,20 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.asImageBitmap
+import androidx.compose.ui.graphics.painter.Painter
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -53,6 +60,12 @@ import java.io.InputStream
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun OutputActivity(navController: NavController, predictValue: String, selectedUri: String) {
+    var isToggled by remember { mutableStateOf(false) }
+    val toggleImage: Painter = if (isToggled) {
+        painterResource(R.drawable.toggle_on)
+    } else {
+        painterResource(R.drawable.toggle_off)
+    }
     Scaffold(
         topBar = {
             TopBar(
@@ -67,10 +80,10 @@ fun OutputActivity(navController: NavController, predictValue: String, selectedU
                 },
                 actionIcon = {
                     IconButton(
-                        onClick = { /* doSomething() */}
+                        onClick = { isToggled = !isToggled }
                     ) {
                         Icon(
-                            imageVector = Icons.Filled.AddCircle,
+                            painter = toggleImage,
                             contentDescription = "토글 아이콘"
                         )
                     }
@@ -87,41 +100,57 @@ fun OutputActivity(navController: NavController, predictValue: String, selectedU
                 BottomBar(
                     navigationIcon = {
                         IconButton(
-                            onClick = { /* doSomething() */}
+                            onClick = { navController.navigate("calender") },
+                            modifier = Modifier
+                                .size(width = 80.dp, height = 78.dp)
+                                .padding(start = 8.dp, top = 8.dp, end = 8.dp, bottom = 8.dp)
                         ) {
                             Icon(
-                                imageVector = Icons.Filled.AddCircle,
-                                contentDescription = "내 기록 아이콘"
+                                imageVector = ImageVector.vectorResource(R.drawable.calender),
+                                contentDescription = "내 기록 아이콘 (캘린더)",
+                                modifier = Modifier.fillMaxSize()
                             )
                         }
                     },
                     actionIcon1 = {
                         IconButton(
-                            onClick = { /* doSomething() */}
+                            onClick = { navController.navigate("input") },
+                            modifier = Modifier
+                                .size(width = 80.dp, height = 78.dp)
+                                .padding(start = 8.dp, top = 8.dp, end = 8.dp, bottom = 8.dp)
                         ) {
                             Icon(
-                                imageVector = Icons.Filled.AddCircle,
-                                contentDescription = "영양정보 아이콘"
+                                imageVector = ImageVector.vectorResource(R.drawable.info),
+                                contentDescription = "영양정보 아이콘",
+                                modifier = Modifier.fillMaxSize()
                             )
                         }
                     },
                     actionIcon2 = {
                         IconButton(
-                            onClick = { /* doSomething() */}
+                            onClick = { /* doSomething() */},
+                            modifier = Modifier
+                                .size(width = 80.dp, height = 78.dp)
+                                .padding(start = 8.dp, top = 8.dp, end = 8.dp, bottom = 8.dp)
                         ) {
                             Icon(
-                                imageVector = Icons.Filled.AddCircle,
-                                contentDescription = "상담 아이콘"
+                                imageVector = ImageVector.vectorResource(R.drawable.consult),
+                                contentDescription = "상담 아이콘",
+                                modifier = Modifier.fillMaxSize()
                             )
                         }
                     },
                     actionIcon3 = {
                         IconButton(
-                            onClick = { /* doSomething() */}
+                            onClick = { /* doSomething() */},
+                            modifier = Modifier
+                                .size(width = 80.dp, height = 78.dp)
+                                .padding(start = 8.dp, top = 8.dp, end = 8.dp, bottom = 8.dp)
                         ) {
                             Icon(
-                                imageVector = Icons.Filled.AddCircle,
-                                contentDescription = "내 상태 아이콘"
+                                imageVector = ImageVector.vectorResource(R.drawable.state),
+                                contentDescription = "내 상태 아이콘",
+                                modifier = Modifier.fillMaxSize()
                             )
                         }
                     }
@@ -152,89 +181,83 @@ fun OutputScreen(navController: NavController, predictValue: String, selectedUri
     val defaultImageBitmap =
         BitmapFactory.decodeResource(resources, R.drawable.no_image).asImageBitmap()
 
-    Column(
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Top,
-        modifier = Modifier.fillMaxSize()
+    Row(
+        horizontalArrangement = Arrangement.Start,
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(20.dp)
     ) {
-        Row(
-            horizontalArrangement = Arrangement.Start,
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(20.dp)
-        ) {
-            // 뒤로 가기
-            IconButton(
-                onClick = {
-                    navController.popBackStack()
-                    navController.popBackStack()
+        // 뒤로 가기
+        IconButton(
+            onClick = {
+                navController.popBackStack()
+                navController.popBackStack()
 
-                }
-            ) {
-                Icon(
-                    painter = painterResource(id = R.drawable.goback),
-                    contentDescription = "Go back",
-                )
             }
-        }
-        // 상단 여백
-        Spacer(modifier = Modifier.height(40.dp))
-        // 해당 음식 이미지
-        Image(
-            // painter = painterResource(id = R.drawable.pizza),
-            bitmap = bitmap?.asImageBitmap() ?: defaultImageBitmap,
-            contentDescription = "",
-            contentScale = ContentScale.Crop,
-            modifier = Modifier
-                .size(300.dp)
-                .border(width = 3.dp, Color.Gray)
-        )
-        // 이미지와 이름 여백
-        Spacer(modifier = Modifier.height(15.dp))
-        // 음식 이름 Text
-        foodNutrient?.let {
-            FoodInfo(redText = it.menu, blackText = "입니다")
-        }
-        // 정렬을 위한 Column
-        Column(
-            horizontalAlignment = Alignment.Start,
-            modifier = Modifier.width(300.dp)
         ) {
-            // 음식 성분 정도 Text
-            foodNutrient?.let {
-                NutrientInfo(
-                    explainText = "열량 : ",
-                    quantityText = it.kcalPer100g,
-                    unitText = " kcal (100g 당)"
-                )
-            }
-            foodNutrient?.let {
-                NutrientInfo(
-                    explainText = "${it.foodUnit} : ",
-                    quantityText = it.kcalPerUnit,
-                    unitText = " kcal"
-                )
-            }
-            foodNutrient?.let {
-                NutrientInfo(
-                    explainText = "포함 당질 : ",
-                    quantityText = it.sugarPer100g,
-                    unitText = " g (100g 당)"
-                )
-            }
-            foodNutrient?.let {
-                NutrientInfo(
-                    explainText = "${it.foodUnit} : ",
-                    quantityText = it.sugarPerUnit,
-                    unitText = " g"
-                )
-            }
+            Icon(
+                painter = painterResource(id = R.drawable.goback),
+                contentDescription = "Go back",
+            )
         }
-        // 위험도 Text 표시
-//        FoodInfo(redText = "고위험", blackText = " 식품군입니다.")
+    }
+    // 상단 여백
+    Spacer(modifier = Modifier.height(40.dp))
+    // 해당 음식 이미지
+    Image(
+        // painter = painterResource(id = R.drawable.pizza),
+        bitmap = bitmap?.asImageBitmap() ?: defaultImageBitmap,
+        contentDescription = "",
+        contentScale = ContentScale.Crop,
+        modifier = Modifier
+            .size(300.dp)
+            .border(width = 3.dp, Color.Gray)
+    )
+    // 이미지와 이름 여백
+    Spacer(modifier = Modifier.height(15.dp))
+    // 음식 이름 Text
+    foodNutrient?.let {
+        FoodInfo(redText = it.menu, blackText = "입니다")
+    }
+    // 정렬을 위한 Column
+    Column(
+        horizontalAlignment = Alignment.Start,
+        modifier = Modifier.width(300.dp)
+    ) {
+        // 음식 성분 정도 Text
         foodNutrient?.let {
-            DangerBox(dangerNum = it.danger)
+            NutrientInfo(
+                explainText = "열량 : ",
+                quantityText = it.kcalPer100g,
+                unitText = " kcal (100g 당)"
+            )
         }
+        foodNutrient?.let {
+            NutrientInfo(
+                explainText = "${it.foodUnit} : ",
+                quantityText = it.kcalPerUnit,
+                unitText = " kcal"
+            )
+        }
+        foodNutrient?.let {
+            NutrientInfo(
+                explainText = "포함 당질 : ",
+                quantityText = it.sugarPer100g,
+                unitText = " g (100g 당)"
+            )
+        }
+        foodNutrient?.let {
+            NutrientInfo(
+                explainText = "${it.foodUnit} : ",
+                quantityText = it.sugarPerUnit,
+                unitText = " g"
+            )
+        }
+    }
+    // 위험도 Text 표시
+//        FoodInfo(redText = "고위험", blackText = " 식품군입니다.")
+    foodNutrient?.let {
+        DangerBox(dangerNum = it.danger)
     }
 }
 
