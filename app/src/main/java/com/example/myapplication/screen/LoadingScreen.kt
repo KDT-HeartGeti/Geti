@@ -32,7 +32,7 @@ fun LoadingScreen(navController: NavController, encodedUri: String) {
     val selectedUri = URLDecoder.decode(encodedUri, "UTF-8")
 
     suspend fun uploadImage(imageUri: Uri): String? = withContext(Dispatchers.IO)  {
-        val url = "http://192.168.35.227:5000/prediction"
+        val url = "http://172.29.74.164:5000/prediction"
         val client = OkHttpClient()
 
         val inputStream = context.contentResolver.openInputStream(imageUri)
@@ -59,11 +59,8 @@ fun LoadingScreen(navController: NavController, encodedUri: String) {
 
             if (response.isSuccessful) {
                 val responseBody = response.body?.string()
-
                 val jsonObject = JSONObject(responseBody)
                 prediction = jsonObject.getString("prediction")
-
-
                 Log.d("성공함", "이미지가 올라갔다? Respones : ${responseBody?: "no data"}")
             } else {
                 Log.e("망함", "망함")

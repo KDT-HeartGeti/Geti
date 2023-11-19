@@ -15,10 +15,12 @@ import androidx.compose.ui.graphics.Color
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.example.myapplication.Screen.InputActivity
 import com.example.myapplication.Screen.InputScreen
 import com.example.myapplication.Screen.OutputScreen
 import com.example.myapplication.Screen.RecsScreen
 import com.example.myapplication.Screen.LoadingScreen
+//import com.example.myapplication.Screen.StartLoadingScreen
 import com.example.myapplication.data.NavScreen
 import com.example.myapplication.ui.theme.MyApplicationTheme
 
@@ -32,6 +34,7 @@ class MainActivity : ComponentActivity() {
         webView.settings.javaScriptEnabled = true
 
         class WebViewClientClass : WebViewClient() {
+            @Deprecated("Deprecated in Java")
             override fun shouldOverrideUrlLoading(view: WebView, url: String): Boolean {
                 if (url.startsWith("intent://")) {
                     try {
@@ -75,7 +78,7 @@ class MainActivity : ComponentActivity() {
 
                     // navigation
                     NavHost(navController = navController, startDestination = startDestination) {
-                        composable(NavScreen.Input.route) { InputScreen(navController) }
+                        composable(NavScreen.Input.route) { InputActivity(navController) }
                         composable(NavScreen.Loading.route) {
                             LoadingScreen(
                                 navController,
@@ -87,7 +90,9 @@ class MainActivity : ComponentActivity() {
                             val selectedUri = it.arguments?.getString("encodedUri") ?: ""
                             OutputScreen(navController, predictValue, selectedUri)
                         }
-                        composable(NavScreen.Recs.route) { RecsScreen(navController) } // Recs 화면을 추가
+                        composable(NavScreen.Recs.route) { RecsScreen(navController) }
+//                        composable(NavScreen.Start.route) { StartLoadingScreen(navController)}
+
                     }
                 }
             }
