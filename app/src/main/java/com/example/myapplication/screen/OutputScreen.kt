@@ -61,11 +61,13 @@ import java.io.InputStream
 @Composable
 fun OutputActivity(navController: NavController, predictValue: String, selectedUri: String) {
     var isToggled by remember { mutableStateOf(false) }
-    val toggleImage: Painter = if (isToggled) {
-        painterResource(R.drawable.toggle_on)
+
+    val toggleImage: Int = if (isToggled) {
+        R.drawable.toggle_on
     } else {
-        painterResource(R.drawable.toggle_off)
+        R.drawable.toggle_off
     }
+
     Scaffold(
         topBar = {
             TopBar(
@@ -83,7 +85,7 @@ fun OutputActivity(navController: NavController, predictValue: String, selectedU
                         onClick = { isToggled = !isToggled }
                     ) {
                         Icon(
-                            painter = toggleImage,
+                            ImageVector.vectorResource(id = toggleImage),
                             contentDescription = "토글 아이콘"
                         )
                     }
