@@ -8,21 +8,22 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Menu
-import androidx.compose.material3.Card
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -32,7 +33,6 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
@@ -41,6 +41,7 @@ import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.example.myapplication.R
+import com.example.myapplication.ui.theme.GraySkull
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -61,15 +62,16 @@ import java.net.URLEncoder
 @Composable
 fun LoadingScreen(navController: NavController, encodedUri: String) {
     val encodedUri1 = URLEncoder.encode(encodedUri, "UTF-8")
+    val selectedUri = URLDecoder.decode(encodedUri, "UTF-8")
     val coroutineScope = rememberCoroutineScope()
     val context = LocalContext.current
-    val selectedUri = URLDecoder.decode(encodedUri, "UTF-8")
 
     var isToggled by remember { mutableStateOf(false) }
-    val toggleImage: Painter = if (isToggled) {
-        painterResource(R.drawable.toggle_on)
+
+    val toggleImage: Int = if (isToggled) {
+        R.drawable.toggle_on
     } else {
-        painterResource(R.drawable.toggle_off)
+        R.drawable.toggle_off
     }
 
     Scaffold(
@@ -89,7 +91,7 @@ fun LoadingScreen(navController: NavController, encodedUri: String) {
                         onClick = { isToggled = !isToggled }
                     ) {
                         Icon(
-                            painter = toggleImage,
+                            ImageVector.vectorResource(id = toggleImage),
                             contentDescription = "토글 아이콘"
                         )
                     }
@@ -165,21 +167,95 @@ fun LoadingScreen(navController: NavController, encodedUri: String) {
         },
         content = { innerPadding ->
             Column(
-                horizontalAlignment = Alignment.CenterHorizontally,
-                verticalArrangement = Arrangement.Top,
                 modifier = Modifier
                     .fillMaxSize()
-                    .padding(innerPadding)
+                    .padding(innerPadding),
+                horizontalAlignment = Alignment.CenterHorizontally
+//                horizontalAlignment = Alignment.CenterHorizontally,
+//                verticalArrangement = Arrangement.Top,
+//                modifier = Modifier
+//                    .fillMaxSize()
+//                    .padding(innerPadding)
             ) {
                 // 모델 예측
                 LoadingPrediction(context, selectedUri, coroutineScope, navController, encodedUri1)
-
-                // 빈 카드 리스트 넣을 공간
-                Text(text = "로딩중❤️❤️로딩중❤️❤️로딩중❤️❤️로딩중❤️❤️로딩중❤️❤️로딩중❤️❤️로딩중❤️❤️")
-
+                // 이미지 화면이 핸드폰마다 사이즈가 달라서 정삭각형 유지를 위해 덩어리를 나눴음.
+                Spacer(modifier = Modifier.height(24.dp))
+                // OutputScreen에서 Image 부분의 스켈레톤 ui
+                LoadingImage()
+                Spacer(modifier = Modifier.height(20.dp))
+                // OutputScreen에서 영양정보 Text 부분의 스켈레톤 ui
+                LoadingText()
             }
         }
     )
+}
+
+// 각 content의 기본 틀 함수
+@Composable
+fun SkullSurface(modifier: Modifier, roundPixel: Int) {
+    Surface(
+        shape = RoundedCornerShape(roundPixel.dp),
+        color = GraySkull,
+        modifier = modifier
+    ) {}
+}
+
+@Composable
+fun LoadingImage() {
+    Column(
+        modifier = Modifier.fillMaxWidth(),
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        SkullSurface(
+            modifier = Modifier
+                .size(320.dp),
+            roundPixel = 8
+        )
+    }
+}
+
+
+@Composable
+fun LoadingText() {
+    Column(
+        modifier = Modifier.fillMaxWidth()
+    ) {
+        SkullSurface(
+            modifier = Modifier
+                .width(80.dp)
+                .height(24.dp),
+            roundPixel = 12
+        )
+        Spacer(modifier = Modifier.height(8.dp))
+        SkullSurface(
+            modifier = Modifier
+                .width(165.dp)
+                .height(37.dp),
+            roundPixel = 12
+        )
+        Spacer(modifier = Modifier.height(20.dp))
+        SkullSurface(
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(100.dp),
+            roundPixel = 12
+        )
+        Spacer(modifier = Modifier.height(12.dp))
+        SkullSurface(
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(100.dp),
+            roundPixel = 12
+        )
+        Spacer(modifier = Modifier.height(12.dp))
+        SkullSurface(
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(100.dp),
+            roundPixel = 12
+        )
+    }
 }
 
 @SuppressLint("CoroutineCreationDuringComposition")
@@ -242,9 +318,3 @@ private fun LoadingPrediction(
         }
     }
 }
-
-
-// 데이터 리스트로 전달할 때
-//                var dataList = mutableListOf(predictValue, selectedUri)
-//                dataList.add(predictValue)
-//                dataList.add(selectedUri)

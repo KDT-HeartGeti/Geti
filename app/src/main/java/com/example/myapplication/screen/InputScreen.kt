@@ -2,7 +2,6 @@ package com.example.myapplication.Screen
 
 import android.annotation.SuppressLint
 import android.graphics.Bitmap
-import android.graphics.BitmapFactory
 import android.net.Uri
 import androidx.activity.compose.ManagedActivityResultLauncher
 import androidx.activity.compose.rememberLauncherForActivityResult
@@ -25,7 +24,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Menu
+import androidx.compose.material.icons.filled.AccountCircle
 import androidx.compose.material3.BottomAppBar
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
@@ -33,20 +32,21 @@ import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.IconButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.asImageBitmap
-import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
@@ -61,6 +61,8 @@ import androidx.navigation.NavController
 import com.example.myapplication.Component.bitmapToUri
 import com.example.myapplication.Component.uriToBitmap
 import com.example.myapplication.R
+import com.example.myapplication.ui.theme.Gray900
+import com.example.myapplication.ui.theme.NeonBlue
 import java.net.URLEncoder
 
 
@@ -70,20 +72,22 @@ import java.net.URLEncoder
 fun InputActivity(navController: NavController) {
     var isToggled by remember { mutableStateOf(false) }
 
-    val toggleImage: Painter = if (isToggled) {
-        painterResource(R.drawable.toggle_on)
-    } else {
-        painterResource(R.drawable.toggle_off)
+    val toggleImage by remember(isToggled) {
+        mutableStateOf(if (isToggled) R.drawable.camera_svgrepo_com else R.drawable.image_on_svgrepo_com)
+    }
+
+    LaunchedEffect(isToggled) {
+        println("isToggled is now $isToggled")
     }
 
     Scaffold(
         topBar = {
             TopBar(
-                title = "홍길동",
+                title = "김상은",
                 navigationIcon = {
                     IconButton(onClick = { /* doSomething() */ }) {
                         Icon(
-                            imageVector = Icons.Filled.Menu,
+                            imageVector = Icons.Filled.AccountCircle,
                             contentDescription = "프로필 사진"
                         )
                     }
@@ -93,7 +97,7 @@ fun InputActivity(navController: NavController) {
                         onClick = { isToggled = !isToggled }
                     ) {
                         Icon(
-                            painter = toggleImage,
+                            ImageVector.vectorResource(id = toggleImage),
                             contentDescription = "토글 아이콘"
                         )
                     }
@@ -179,7 +183,6 @@ fun InputActivity(navController: NavController) {
     )
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun InputScreen(navController: NavController) {
     // 갤러리 이미지 uri 객체
@@ -205,11 +208,6 @@ fun InputScreen(navController: NavController) {
     // 비트맵 변환 변수
     val bitmap: Bitmap? = selectUri?.let { uriToBitmap(it, context) } ?: takenPhoto
 
-    // 이미지 == null일 때 이미지
-    val resources = context.resources
-    val defaultImageBitmap =
-        BitmapFactory.decodeResource(resources, R.drawable.defalut_image).asImageBitmap()
-
     // 카메라 이미지 런쳐
     val cameraLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.TakePicturePreview(),
@@ -221,21 +219,35 @@ fun InputScreen(navController: NavController) {
         }
     )
 
-    var menu by remember { mutableStateOf("") }
-    var menuName: String? = null
-    Row(
-        horizontalArrangement = Arrangement.spacedBy(8.dp, Alignment.Start),
-        verticalAlignment = Alignment.Top,
-        modifier = Modifier.fillMaxSize()
+    Column(
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.Top,
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(start = 20.dp, end = 20.dp)
     ) {
         // 입력 페이지에 나타날 이미지 공간
-        Image(
-            bitmap = bitmap?.asImageBitmap() ?: defaultImageBitmap, contentDescription = null,
-            modifier = Modifier
-                .border(width = 3.dp, Color.Gray)
-                .size(320.dp),
-            contentScale = ContentScale.Crop
-        )
+        // 사진이 업로드 되었을 시
+        if (bitmap != null) {
+            Image(
+                bitmap = bitmap.asImageBitmap(),
+                contentDescription = null,
+                modifier = Modifier
+                    .size(320.dp)
+                    .clip(RoundedCornerShape(8.dp)),
+                contentScale = ContentScale.Crop,
+            )
+        } else {
+            // 사진이 업로드 되지 않았을 때
+            Image(
+                imageVector = ImageVector.vectorResource(id = R.drawable.image),
+                contentDescription = null,
+                modifier = Modifier
+                    .size(320.dp)
+                    .clip(RoundedCornerShape(8.dp)),
+                contentScale = ContentScale.Crop
+            )
+        }
 
         // 이미지와 버튼 여백
         Spacer(modifier = Modifier.height(5.dp))
@@ -247,58 +259,28 @@ fun InputScreen(navController: NavController) {
         ) {
             CameraAndGallery(cameraLauncher, launcher)
         }
-        //
+
         Spacer(modifier = Modifier.height(5.dp))
 
         // 영양정보 분석하기 버튼
-        IconButton(
-            onClick = {
+        GetiButton(
+            onclick = {
                 if (selectUri != null) {
                     val encodedUri = URLEncoder.encode(selectUri.toString(), "UTF-8")
                     navController.navigate("loading/${encodedUri}")
                 }
-            }
-        ) {
-            Icon(
-                painter = painterResource(id = R.drawable.predict),
-                contentDescription = "영양정보 분석하기"
-            )
-        }
+            }, text = "영양정보 분석하기"
+        )
 
         // 영양정보 분석하기와 광고배너의 간격
-        Spacer(modifier = Modifier.height(5.dp))
+        Spacer(modifier = Modifier.height(15.dp))
 
         // 광고 배너
-        IconButton(
-            onClick = {
+        GetiButton(
+            onclick = {
                 navController.navigate("recs")
-            }) {
-            Icon(
-                painter = painterResource(id = R.drawable.banner),
-                contentDescription = "당뇨환자 건강기능식품 추천"
-            )
-        }
-
-        Spacer(modifier = Modifier.height(5.dp))
-        Row {
-            // 메뉴 이름 작성 TextField
-            TextField(
-                value = menu,
-                onValueChange = { menu = it },
-                label = { Text(text = "음식이름을 입력하세요.") }
-            )
-            // OutputScreen으로 넘겨주는 버튼
-            Button(
-                onClick = {
-                    // 메뉴를 고정된 상태로 OutputScreen으로 넘겨주기 위한 변수 할당
-                    menuName = menu
-                    // 버튼 클릭시 OutputScreen으로 menuName 전달하면서 이동
-//                    navController.navigate("output/$menuName")
-                }
-            ) {
-                Text(text = "입력")
-            }
-        }
+            }, text = "당뇨환자 건강기능식품 추천"
+        )
     }
 }
 
@@ -307,53 +289,85 @@ private fun CameraAndGallery(
     cameraLauncher: ManagedActivityResultLauncher<Void?, Bitmap?>,
     launcher: ManagedActivityResultLauncher<PickVisualMediaRequest, Uri?>
 ) {
-    val iconSize = 156.dp
-
-    // 카메라 실행 버튼
-    IconButton(
-        onClick = {
-            // 기본 카메라 앱 실행
-            cameraLauncher.launch(null)
-        }
+    Row(
+        horizontalArrangement = Arrangement.SpaceBetween,
+        modifier = Modifier.width(320.dp)
     ) {
-        Icon(
-            painter = painterResource(id = R.drawable.camera),
-            modifier = Modifier
-                .size(width = 156.dp, height = 100.dp),
-            contentDescription = "사진 찍기"
+        // 카메라 실행 버튼
+        CameraGalleryButton(
+            onclick = {
+                // 기본 카메라 앱 실행
+                cameraLauncher.launch(null)
+            },
+            text = "사진 찍기",
+            iconPath = R.drawable.camera__1_
         )
-    }
-    IconButton(
-        onClick = {
-            launcher.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
-        }
-    ) {
-        Icon(
-            painter = painterResource(id = R.drawable.import_image),
-            modifier = Modifier
-                .size(width = 156.dp, height = 100.dp),
-            contentDescription = "사진 불러오기"
+        // 사진 선택 도구 실행 버튼
+        CameraGalleryButton(
+            onclick = {
+                launcher.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
+            },
+            text = "사진 불러오기",
+            iconPath = R.drawable.image1
         )
     }
 }
 
-// 버튼 함수
+// 분석하기와 추천 버튼 함수
 @Composable
 fun GetiButton(onclick: () -> Unit, text: String) {
     Button(
         onClick = onclick,
-        shape = RoundedCornerShape(15.dp),
-        colors = ButtonDefaults.buttonColors(Color.Yellow),
+        colors = ButtonDefaults.buttonColors(NeonBlue),
         modifier = Modifier
-            .height(50.dp)
-            .width(130.dp)
+            .width(320.dp)
+            .height(60.dp)
+            .padding(start = 0.dp, end = 0.dp),
+        shape = RoundedCornerShape(8.dp),
+        contentPadding = PaddingValues(top = 8.dp, bottom = 8.dp, start = 20.dp, end = 20.dp)
     ) {
         Text(
             text = text,
-            color = Color.Black,
+            color = Color.White,
             textAlign = TextAlign.Center,
-            fontSize = 20.sp
+            fontWeight = FontWeight.Bold,
+            fontSize = 18.sp,
+            modifier = Modifier.fillMaxSize()
         )
+    }
+}
+
+// 사진 불러오기, 사진 선택 버튼 함수
+@Composable
+fun CameraGalleryButton(onclick: () -> Unit, text: String, iconPath: Int) {
+    IconButton(
+        onClick = onclick,
+        modifier = Modifier
+            .clip(RoundedCornerShape(8.dp))
+            .border(1.dp, Color(0xFFCACDD1), RoundedCornerShape(8.dp))
+            .width(156.dp)
+            .height(100.dp),
+        colors = IconButtonDefaults.iconButtonColors(Color.White)
+    ) {
+        Column(
+            Modifier.fillMaxSize(),
+            verticalArrangement = Arrangement.Center,
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            Icon(
+                imageVector = ImageVector.vectorResource(id = iconPath),
+                modifier = Modifier
+                    .size(width = 156.dp, height = 100.dp),
+                contentDescription = text
+            )
+            Spacer(modifier = Modifier.height(8.dp))
+            Text(
+                text = text,
+                fontSize = 18.sp,
+                fontWeight = FontWeight.Bold,
+                color = Gray900
+            )
+        }
     }
 }
 
@@ -389,7 +403,7 @@ fun BottomBar(
     actionIcon3: @Composable () -> Unit
 ) {
     BottomAppBar(
-        contentPadding = PaddingValues(horizontal = 0.dp),
+        contentPadding = PaddingValues(horizontal = 0.dp), // 10
         modifier = Modifier.background(MaterialTheme.colorScheme.primary)
     ) {
         Row(
