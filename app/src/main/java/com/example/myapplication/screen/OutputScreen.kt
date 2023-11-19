@@ -8,6 +8,7 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -19,8 +20,14 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.AddCircle
+import androidx.compose.material.icons.filled.Menu
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -35,14 +42,105 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
-import com.example.myapplication.component.uriToBitmap
+import com.example.myapplication.Component.uriToBitmap
 import com.example.myapplication.R
 import com.example.myapplication.database.getFoodNutrientByName
 import java.io.File
 import java.io.FileOutputStream
 import java.io.InputStream
 
-
+@SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun OutputActivity(navController: NavController, predictValue: String, selectedUri: String) {
+    Scaffold(
+        topBar = {
+            TopBar(
+                title = "홍길동",
+                navigationIcon = {
+                    IconButton(onClick = { /* doSomething() */ }) {
+                        Icon(
+                            imageVector = Icons.Filled.Menu,
+                            contentDescription = "프로필 사진"
+                        )
+                    }
+                },
+                actionIcon = {
+                    IconButton(
+                        onClick = { /* doSomething() */}
+                    ) {
+                        Icon(
+                            imageVector = Icons.Filled.AddCircle,
+                            contentDescription = "토글 아이콘"
+                        )
+                    }
+                }
+            )
+        },
+        bottomBar = {
+            Box(
+                modifier = Modifier
+                    .background(MaterialTheme.colorScheme.primary)
+                    .fillMaxWidth()
+                    .height(56.dp)
+            ) {
+                BottomBar(
+                    navigationIcon = {
+                        IconButton(
+                            onClick = { /* doSomething() */}
+                        ) {
+                            Icon(
+                                imageVector = Icons.Filled.AddCircle,
+                                contentDescription = "내 기록 아이콘"
+                            )
+                        }
+                    },
+                    actionIcon1 = {
+                        IconButton(
+                            onClick = { /* doSomething() */}
+                        ) {
+                            Icon(
+                                imageVector = Icons.Filled.AddCircle,
+                                contentDescription = "영양정보 아이콘"
+                            )
+                        }
+                    },
+                    actionIcon2 = {
+                        IconButton(
+                            onClick = { /* doSomething() */}
+                        ) {
+                            Icon(
+                                imageVector = Icons.Filled.AddCircle,
+                                contentDescription = "상담 아이콘"
+                            )
+                        }
+                    },
+                    actionIcon3 = {
+                        IconButton(
+                            onClick = { /* doSomething() */}
+                        ) {
+                            Icon(
+                                imageVector = Icons.Filled.AddCircle,
+                                contentDescription = "내 상태 아이콘"
+                            )
+                        }
+                    }
+                )
+            }
+        },
+        content = { innerPadding ->
+            Column(
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.Top,
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(innerPadding)
+            ) {
+                OutputScreen(navController, predictValue, selectedUri)
+            }
+        }
+    )
+}
 
 @SuppressLint("CoroutineCreationDuringComposition")
 @Composable
