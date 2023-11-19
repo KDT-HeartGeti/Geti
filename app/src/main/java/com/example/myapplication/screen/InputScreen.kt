@@ -22,6 +22,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccountCircle
@@ -36,6 +37,7 @@ import androidx.compose.material3.IconButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -61,6 +63,9 @@ import androidx.navigation.NavController
 import com.example.myapplication.Component.bitmapToUri
 import com.example.myapplication.Component.uriToBitmap
 import com.example.myapplication.R
+import com.example.myapplication.ui.theme.Gray200
+import com.example.myapplication.ui.theme.Gray400
+import com.example.myapplication.ui.theme.Gray50
 import com.example.myapplication.ui.theme.Gray900
 import com.example.myapplication.ui.theme.NeonBlue
 import java.net.URLEncoder
@@ -73,11 +78,7 @@ fun InputActivity(navController: NavController) {
     var isToggled by remember { mutableStateOf(false) }
 
     val toggleImage by remember(isToggled) {
-        mutableStateOf(if (isToggled) R.drawable.camera_svgrepo_com else R.drawable.image_on_svgrepo_com)
-    }
-
-    LaunchedEffect(isToggled) {
-        println("isToggled is now $isToggled")
+        mutableStateOf(if (isToggled) R.drawable.toggle_on_svgrepo_com else R.drawable.toggle_off_svgrepo_com)
     }
 
     Scaffold(
@@ -87,7 +88,7 @@ fun InputActivity(navController: NavController) {
                 navigationIcon = {
                     IconButton(onClick = { /* doSomething() */ }) {
                         Icon(
-                            imageVector = Icons.Filled.AccountCircle,
+                            painter = painterResource(id = R.drawable.heartbeat_logo),
                             contentDescription = "프로필 사진"
                         )
                     }
@@ -98,7 +99,8 @@ fun InputActivity(navController: NavController) {
                     ) {
                         Icon(
                             ImageVector.vectorResource(id = toggleImage),
-                            contentDescription = "토글 아이콘"
+                            contentDescription = "토글 아이콘",
+                            tint = if (isToggled) Gray400 else NeonBlue
                         )
                     }
                 }
@@ -116,13 +118,15 @@ fun InputActivity(navController: NavController) {
                         IconButton(
                             onClick = { navController.navigate("calender") },
                             modifier = Modifier
-                                .size(width = 80.dp, height = 78.dp)
-                                .padding(start = 8.dp, top = 8.dp, end = 8.dp, bottom = 8.dp)
+                                .size(width = 100.dp, height = 100.dp)
+                                .padding(start = 14.dp, top = 8.dp, end = 14.dp, bottom = 8.dp)
                         ) {
                             Icon(
                                 imageVector = ImageVector.vectorResource(R.drawable.calender),
                                 contentDescription = "내 기록 아이콘 (캘린더)",
-                                modifier = Modifier.fillMaxSize()
+                                modifier = Modifier
+                                    .size(width = 30.dp, height = 30.dp)
+
                             )
                         }
                     },
@@ -156,7 +160,7 @@ fun InputActivity(navController: NavController) {
                     },
                     actionIcon3 = {
                         IconButton(
-                            onClick = { /* doSomething() */ },
+                            onClick = { navController.navigate("state")},
                             modifier = Modifier
                                 .size(width = 80.dp, height = 78.dp)
                                 .padding(start = 8.dp, top = 8.dp, end = 8.dp, bottom = 8.dp)
@@ -176,6 +180,7 @@ fun InputActivity(navController: NavController) {
                 modifier = Modifier
                     .fillMaxSize()
                     .padding(innerPadding)
+                    .background(Gray50)
             ) {
                 InputScreen(navController)
             }
@@ -300,7 +305,7 @@ private fun CameraAndGallery(
                 cameraLauncher.launch(null)
             },
             text = "사진 찍기",
-            iconPath = R.drawable.camera__1_
+            iconPath = R.drawable.camera_svgrepo_com
         )
         // 사진 선택 도구 실행 버튼
         CameraGalleryButton(
@@ -308,7 +313,7 @@ private fun CameraAndGallery(
                 launcher.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
             },
             text = "사진 불러오기",
-            iconPath = R.drawable.image1
+            iconPath = R.drawable.image_on_svgrepo_com
         )
     }
 }
@@ -357,7 +362,7 @@ fun CameraGalleryButton(onclick: () -> Unit, text: String, iconPath: Int) {
             Icon(
                 imageVector = ImageVector.vectorResource(id = iconPath),
                 modifier = Modifier
-                    .size(width = 156.dp, height = 100.dp),
+                    .size(width = 28.dp, height = 28.dp),
                 contentDescription = text
             )
             Spacer(modifier = Modifier.height(8.dp))
@@ -365,7 +370,8 @@ fun CameraGalleryButton(onclick: () -> Unit, text: String, iconPath: Int) {
                 text = text,
                 fontSize = 18.sp,
                 fontWeight = FontWeight.Bold,
-                color = Gray900
+                color = Gray900,
+                modifier = Modifier.wrapContentSize(Alignment.Center)
             )
         }
     }
@@ -378,14 +384,15 @@ fun TopBar(
     navigationIcon: @Composable () -> Unit,
     actionIcon: @Composable () -> Unit
 ) {
-    CenterAlignedTopAppBar(
+    TopAppBar(
         title = {
             Text(
                 text = title,
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis,
                 fontWeight = FontWeight.ExtraBold,
-                style = MaterialTheme.typography.titleLarge.copy(fontSize = 27.sp)
+                style = MaterialTheme.typography.titleLarge.copy(fontSize = 22.sp),
+                textAlign = TextAlign.Start
             )
         },
         navigationIcon = navigationIcon,

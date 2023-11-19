@@ -17,6 +17,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.AccountCircle
 import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -41,7 +42,10 @@ import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.example.myapplication.R
+import com.example.myapplication.ui.theme.Gray400
+import com.example.myapplication.ui.theme.Gray50
 import com.example.myapplication.ui.theme.GraySkull
+import com.example.myapplication.ui.theme.NeonBlue
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -52,7 +56,10 @@ import okhttp3.OkHttpClient
 import okhttp3.Request
 import okhttp3.RequestBody
 import org.json.JSONObject
+import java.io.File
+import java.io.FileOutputStream
 import java.io.IOException
+import java.io.InputStream
 import java.net.URLDecoder
 import java.net.URLEncoder
 
@@ -68,20 +75,18 @@ fun LoadingScreen(navController: NavController, encodedUri: String) {
 
     var isToggled by remember { mutableStateOf(false) }
 
-    val toggleImage: Int = if (isToggled) {
-        R.drawable.toggle_on
-    } else {
-        R.drawable.toggle_off
+    val toggleImage by remember(isToggled) {
+        mutableStateOf(if (isToggled) R.drawable.toggle_on_svgrepo_com else R.drawable.toggle_off_svgrepo_com)
     }
 
     Scaffold(
         topBar = {
             TopBar(
-                title = "홍길동",
+                title = "김상은",
                 navigationIcon = {
                     IconButton(onClick = { /* doSomething() */ }) {
                         Icon(
-                            imageVector = Icons.Filled.Menu,
+                            imageVector = Icons.Filled.AccountCircle,
                             contentDescription = "프로필 사진"
                         )
                     }
@@ -92,7 +97,8 @@ fun LoadingScreen(navController: NavController, encodedUri: String) {
                     ) {
                         Icon(
                             ImageVector.vectorResource(id = toggleImage),
-                            contentDescription = "토글 아이콘"
+                            contentDescription = "토글 아이콘",
+                            tint = if (isToggled) Gray400 else NeonBlue
                         )
                     }
                 }
@@ -110,13 +116,15 @@ fun LoadingScreen(navController: NavController, encodedUri: String) {
                         IconButton(
                             onClick = { navController.navigate("calender") },
                             modifier = Modifier
-                                .size(width = 80.dp, height = 78.dp)
-                                .padding(start = 8.dp, top = 8.dp, end = 8.dp, bottom = 8.dp)
+                                .size(width = 100.dp, height = 100.dp)
+                                .padding(start = 14.dp, top = 8.dp, end = 14.dp, bottom = 8.dp)
                         ) {
                             Icon(
                                 imageVector = ImageVector.vectorResource(R.drawable.calender),
                                 contentDescription = "내 기록 아이콘 (캘린더)",
-                                modifier = Modifier.fillMaxSize()
+                                modifier = Modifier
+                                    .size(width = 30.dp, height = 30.dp)
+
                             )
                         }
                     },
@@ -136,7 +144,7 @@ fun LoadingScreen(navController: NavController, encodedUri: String) {
                     },
                     actionIcon2 = {
                         IconButton(
-                            onClick = { /* doSomething() */},
+                            onClick = { /* doSomething() */ },
                             modifier = Modifier
                                 .size(width = 80.dp, height = 78.dp)
                                 .padding(start = 8.dp, top = 8.dp, end = 8.dp, bottom = 8.dp)
@@ -150,7 +158,7 @@ fun LoadingScreen(navController: NavController, encodedUri: String) {
                     },
                     actionIcon3 = {
                         IconButton(
-                            onClick = { /* doSomething() */},
+                            onClick = { navController.navigate("state")},
                             modifier = Modifier
                                 .size(width = 80.dp, height = 78.dp)
                                 .padding(start = 8.dp, top = 8.dp, end = 8.dp, bottom = 8.dp)
@@ -169,13 +177,9 @@ fun LoadingScreen(navController: NavController, encodedUri: String) {
             Column(
                 modifier = Modifier
                     .fillMaxSize()
-                    .padding(innerPadding),
+                    .padding(innerPadding)
+                    .background(Gray50),
                 horizontalAlignment = Alignment.CenterHorizontally
-//                horizontalAlignment = Alignment.CenterHorizontally,
-//                verticalArrangement = Arrangement.Top,
-//                modifier = Modifier
-//                    .fillMaxSize()
-//                    .padding(innerPadding)
             ) {
                 // 모델 예측
                 LoadingPrediction(context, selectedUri, coroutineScope, navController, encodedUri1)
@@ -317,4 +321,14 @@ private fun LoadingPrediction(
             }
         }
     }
+}
+
+fun createFileFromInputStream(inputStream: InputStream?): File {
+    val file = File.createTempFile("temp", null)
+    inputStream?.use { input ->
+        FileOutputStream(file).use { output ->
+            input.copyTo(output)
+        }
+    }
+    return file
 }
