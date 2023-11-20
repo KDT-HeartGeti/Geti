@@ -156,7 +156,7 @@ fun MyStateActivity(navController: NavController) {
                     .padding(innerPadding)
                     .background(Gray50)
             ) {
-                InputScreen(navController)
+                MyState(navController)
             }
         }
     )
@@ -188,7 +188,7 @@ fun MyState(navController: NavController) {
             }
         }
         item {
-            Spacer(modifier = Modifier.height(24.dp))
+            Spacer(modifier = Modifier.height(12.dp))
             Card(
                 colors = CardDefaults.cardColors(Color.White),
                 shape = RoundedCornerShape(12.dp),
@@ -205,7 +205,7 @@ fun MyState(navController: NavController) {
             }
         }
         item {
-            Spacer(modifier = Modifier.height(24.dp))
+            Spacer(modifier = Modifier.height(12.dp))
             Card(
                 colors = CardDefaults.cardColors(Color.White),
                 shape = RoundedCornerShape(12.dp),
@@ -229,7 +229,7 @@ fun MyState(navController: NavController) {
             }
         }
         item {
-            Spacer(modifier = Modifier.height(24.dp))
+            Spacer(modifier = Modifier.height(12.dp))
             Card(
                 colors = CardDefaults.cardColors(Color.White),
                 shape = RoundedCornerShape(12.dp),
@@ -277,7 +277,7 @@ fun MyState(navController: NavController) {
             }
         }
         item {
-            Spacer(modifier = Modifier.height(24.dp))
+            Spacer(modifier = Modifier.height(12.dp))
             Card(
                 colors = CardDefaults.cardColors(Color.White),
                 shape = RoundedCornerShape(12.dp),

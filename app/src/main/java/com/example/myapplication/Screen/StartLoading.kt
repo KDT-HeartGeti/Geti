@@ -34,7 +34,7 @@ fun StartLoadingScreen(navController: NavController) {
     LaunchedEffect(key1 = true) {
         delay(2000L)
         // After a delay, navigate to another screen
-        navController.navigate("input")
+        navController.navigate("state")
     }
 }
 

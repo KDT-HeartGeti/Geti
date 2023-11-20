@@ -22,6 +22,7 @@ import com.example.myapplication.Screen.OutputScreen
 import com.example.myapplication.Screen.RecsScreen
 import com.example.myapplication.Screen.LoadingScreen
 import com.example.myapplication.Screen.MyState
+import com.example.myapplication.Screen.MyStateActivity
 import com.example.myapplication.Screen.OutputActivity
 import com.example.myapplication.Screen.StartLoadingScreen
 //import com.example.myapplication.Screen.StartLoadingScreen
@@ -84,7 +85,7 @@ class MainActivity : ComponentActivity() {
                     // navigation
                     NavHost(navController = navController, startDestination = startDestination) {
                         composable(NavScreen.Start.route) { StartLoadingScreen(navController)}
-                        composable(NavScreen.MyState.route) { MyState(navController) }
+                        composable(NavScreen.MyState.route) { MyStateActivity(navController) }
                         composable(NavScreen.Recs.route) { RecsScreen(navController) }
                         composable(NavScreen.Calender.route) { CalendarScreen(navController) }
                         composable(NavScreen.Input.route) { InputActivity(navController) }
