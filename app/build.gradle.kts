@@ -83,6 +83,24 @@ dependencies {
 
     // Import the Firebase BoM
     implementation(platform("com.google.firebase:firebase-bom:32.5.0"))
+    implementation("com.google.firebase:firebase-auth-ktx")
+    implementation("com.google.firebase:firebase-firestore-ktx")
+//    implementation("com.google.firebase:firebase-storage-ktx")
+//    implementation("com.google.firebase:firebase-database-ktx")
+//    implementation("com.google.firebase:firebase-analytics-ktx")
+//    implementation("com.google.firebase:firebase-ml-vision")
+//    implementation("com.google.firebase:firebase-ml-vision-image-label-model")
+//    implementation("com.google.firebase:firebase-ml-vision-object-detection-model")
+//    implementation("com.google.firebase:firebase-ml-vision-face-model")
+//    implementation("com.google.firebase:firebase-ml-vision-barcode-model")
+//    implementation("com.google.firebase:firebase-ml-vision-automl")
+//    implementation("com.google.firebase:firebase-ml-model-interpreter")
+//    implementation("com.google.firebase:firebase-ml-natural-language")
+//    implementation("com.google.firebase:firebase-ml-natural-language-language-id-model")
+//    implementation("com.google.firebase:firebase-ml-natural-language-smart-reply-model")
+//    implementation("com.google.firebase:firebase-ml-natural-language-translate-model")
+    implementation("com.google.android.gms:play-services-auth:20.7.0")
+
     // TODO: Add the dependencies for Firebase products you want to use
     // When using the BoM, don't specify versions in Firebase dependencies
     implementation("com.google.firebase:firebase-analytics")
@@ -92,6 +110,5 @@ dependencies {
     implementation ("com.squareup.retrofit2:retrofit:2.9.0")
     implementation ("com.squareup.retrofit2:converter-gson:2.9.0")
     implementation ("com.squareup.okhttp3:okhttp:4.9.1")
-
 }
 
