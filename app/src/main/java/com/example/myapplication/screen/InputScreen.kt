@@ -83,6 +83,7 @@ fun InputActivity(navController: NavController) {
     }
 
     Scaffold(
+        Modifier.background(Gray50),
         topBar = {
             Box(
                 modifier = Modifier
@@ -119,9 +120,9 @@ fun InputActivity(navController: NavController) {
         bottomBar = {
             Box(
                 modifier = Modifier
-                    .background(Gray50)
+                    .background(NeonRed)
                     .fillMaxWidth()
-//                    .height(100.dp)
+                    .height(80.dp)
 //                    .padding(start = 20.dp, end = 20.dp)
             ) {
                 BottomBar(
@@ -131,10 +132,14 @@ fun InputActivity(navController: NavController) {
 
                         IconButton(
                             onClick = { navController.navigate("calender") },
-//                            modifier = Modifier
+                            modifier = Modifier
+                                .size(70.dp)
 //                                .padding(start = 14.dp, top = 8.dp, end = 14.dp, bottom = 8.dp)
                         ) {
-                            Column {
+                            Column(
+                                verticalArrangement = Arrangement.Center,
+                                horizontalAlignment = Alignment.CenterHorizontally
+                            ) {
                                 Icon(
                                     imageVector = ImageVector.vectorResource(R.drawable.calender),
                                     contentDescription = "내 기록 아이콘 (캘린더)",
@@ -145,7 +150,7 @@ fun InputActivity(navController: NavController) {
                                 Text(
                                     text = "내기록",
                                     color = if (currentRoute == "calender") NeonBlue else Gray500,
-                                    fontSize = 16.sp,
+                                    fontSize = 14.sp,
                                     fontWeight = FontWeight.Bold
                                 )
                             }
@@ -156,10 +161,14 @@ fun InputActivity(navController: NavController) {
 
                         IconButton(
                             onClick = { navController.navigate("input") },
-//                            modifier = Modifier
+                            modifier = Modifier
+                                .size(70.dp)
 //                                .padding(start = 8.dp, top = 8.dp, end = 8.dp, bottom = 8.dp)
                         ) {
-                            Column {
+                            Column(
+                                verticalArrangement = Arrangement.Center,
+                                horizontalAlignment = Alignment.CenterHorizontally
+                            ) {
                                 Icon(
                                     imageVector = ImageVector.vectorResource(R.drawable.info),
                                     contentDescription = "영양정보 아이콘",
@@ -169,7 +178,7 @@ fun InputActivity(navController: NavController) {
                                 Text(
                                     text = "영양정보",
                                     color = if (currentRoute == "input") NeonBlue else Gray500,
-                                    fontSize = 16.sp,
+                                    fontSize = 14.sp,
                                     fontWeight = FontWeight.Bold
                                 )
                             }
@@ -180,10 +189,14 @@ fun InputActivity(navController: NavController) {
 
                         IconButton(
                             onClick = { /* doSomething() */ },
-//                            modifier = Modifier
+                            modifier = Modifier
+                                .size(70.dp)
 //                                .padding(start = 8.dp, top = 8.dp, end = 8.dp, bottom = 8.dp)
                         ) {
-                            Column {
+                            Column(
+                                verticalArrangement = Arrangement.Center,
+                                horizontalAlignment = Alignment.CenterHorizontally
+                            ) {
                                 Icon(
                                     imageVector = ImageVector.vectorResource(R.drawable.consult),
                                     contentDescription = "상담 아이콘",
@@ -195,7 +208,7 @@ fun InputActivity(navController: NavController) {
                                     text = "상담",
 //                                    color = if (currentRoute == "calender") NeonRed else Gray500,
                                     color = Gray500,
-                                    fontSize = 16.sp,
+                                    fontSize = 14.sp,
                                     fontWeight = FontWeight.Bold
                                 )
                             }
@@ -206,10 +219,14 @@ fun InputActivity(navController: NavController) {
 
                         IconButton(
                             onClick = { navController.navigate("state") },
-//                            modifier = Modifier
+                            modifier = Modifier
+                                .size(70.dp)
 //                                .padding(start = 8.dp, top = 8.dp, end = 8.dp, bottom = 8.dp)
                         ) {
-                            Column {
+                            Column(
+                                verticalArrangement = Arrangement.Center,
+                                horizontalAlignment = Alignment.CenterHorizontally
+                            ) {
                                 Icon(
                                     imageVector = ImageVector.vectorResource(R.drawable.state),
                                     contentDescription = "내 상태 아이콘",
@@ -219,7 +236,7 @@ fun InputActivity(navController: NavController) {
                                 Text(
                                     text = "내상태",
                                     color = if (currentRoute == "state") NeonBlue else Gray500,
-                                    fontSize = 16.sp,
+                                    fontSize = 14.sp,
                                     fontWeight = FontWeight.Bold
                                 )
                             }
@@ -284,6 +301,7 @@ fun InputScreen(navController: NavController) {
             .fillMaxSize()
             .padding(start = 20.dp, end = 20.dp)
     ) {
+        Spacer(modifier = Modifier.height(24.dp))
         // 입력 페이지에 나타날 이미지 공간
         // 사진이 업로드 되었을 시
         if (bitmap != null) {
@@ -468,7 +486,9 @@ fun BottomBar(
 ) {
     BottomAppBar(
 //        contentPadding = PaddingValues(start = 20.dp, end = 20.dp), // 10
-        modifier = Modifier.background(Gray50).fillMaxWidth()
+        modifier = Modifier
+            .background(Gray50)
+            .fillMaxWidth()
     ) {
         Row(
             modifier = Modifier
