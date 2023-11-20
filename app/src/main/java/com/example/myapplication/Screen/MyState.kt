@@ -23,6 +23,8 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.myapplication.ui.theme.NeonRed
 
+
+
 @Composable
 fun MyState(navController: NavController) {
     LazyColumn(
