@@ -108,7 +108,7 @@ fun OutputActivity(navController: NavController, predictValue: String, selectedU
         bottomBar = {
             Box(
                 modifier = Modifier
-                    .background(MaterialTheme.colorScheme.primary)
+                    .background(Gray50)
                     .fillMaxWidth()
                     .height(56.dp)
             ) {

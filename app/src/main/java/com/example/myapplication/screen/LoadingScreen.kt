@@ -272,7 +272,7 @@ private fun LoadingPrediction(
     encodedUri1: String?
 ) {
     suspend fun uploadImage(imageUri: Uri): String? = withContext(Dispatchers.IO) {
-        val url = "http://192.168.35.177:5000/prediction"
+        val url = "http://192.168.1.59:5000/prediction"
         val client = OkHttpClient()
 
         val inputStream = context.contentResolver.openInputStream(imageUri)

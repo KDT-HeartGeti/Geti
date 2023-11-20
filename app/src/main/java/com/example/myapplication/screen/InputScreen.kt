@@ -23,13 +23,11 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentSize
+import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.AccountCircle
 import androidx.compose.material3.BottomAppBar
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -37,9 +35,9 @@ import androidx.compose.material3.IconButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextField
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -47,6 +45,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.graphics.vector.ImageVector
@@ -66,8 +65,10 @@ import com.example.myapplication.R
 import com.example.myapplication.ui.theme.Gray200
 import com.example.myapplication.ui.theme.Gray400
 import com.example.myapplication.ui.theme.Gray50
+import com.example.myapplication.ui.theme.Gray500
 import com.example.myapplication.ui.theme.Gray900
 import com.example.myapplication.ui.theme.NeonBlue
+import com.example.myapplication.ui.theme.NeonRed
 import java.net.URLEncoder
 
 
@@ -83,93 +84,145 @@ fun InputActivity(navController: NavController) {
 
     Scaffold(
         topBar = {
-            TopBar(
-                title = "김상은",
-                navigationIcon = {
-                    IconButton(onClick = { /* doSomething() */ }) {
-                        Icon(
-                            painter = painterResource(id = R.drawable.heartbeat_logo),
-                            contentDescription = "프로필 사진"
-                        )
+            Box(
+                modifier = Modifier
+                    .padding(start = 20.dp, end = 20.dp)
+                    .height(64.dp)
+//                    .clip(
+//                        RoundedCornerShape(bottomStart = 12.dp, bottomEnd = 12.dp)
+//                    )
+            ) {
+                TopBar(
+                    title = "김상은",
+                    navigationIcon = {
+                        IconButton(onClick = { /* doSomething() */ }) {
+                            Icon(
+                                painter = painterResource(id = R.drawable.heartbeat_logo),
+                                contentDescription = "프로필 사진"
+                            )
+                        }
+                    },
+                    actionIcon = {
+                        IconButton(
+                            onClick = { isToggled = !isToggled }
+                        ) {
+                            Icon(
+                                ImageVector.vectorResource(id = toggleImage),
+                                contentDescription = "토글 아이콘",
+                                tint = if (isToggled) Gray400 else NeonBlue
+                            )
+                        }
                     }
-                },
-                actionIcon = {
-                    IconButton(
-                        onClick = { isToggled = !isToggled }
-                    ) {
-                        Icon(
-                            ImageVector.vectorResource(id = toggleImage),
-                            contentDescription = "토글 아이콘",
-                            tint = if (isToggled) Gray400 else NeonBlue
-                        )
-                    }
-                }
-            )
+                )
+            }
         },
         bottomBar = {
             Box(
                 modifier = Modifier
-                    .background(MaterialTheme.colorScheme.primary)
+                    .background(Gray50)
                     .fillMaxWidth()
-                    .height(56.dp)
+//                    .height(100.dp)
+//                    .padding(start = 20.dp, end = 20.dp)
             ) {
                 BottomBar(
+
                     navigationIcon = {
+                        val currentRoute = navController.currentDestination?.route
+
                         IconButton(
                             onClick = { navController.navigate("calender") },
-                            modifier = Modifier
-                                .size(width = 100.dp, height = 100.dp)
-                                .padding(start = 14.dp, top = 8.dp, end = 14.dp, bottom = 8.dp)
+//                            modifier = Modifier
+//                                .padding(start = 14.dp, top = 8.dp, end = 14.dp, bottom = 8.dp)
                         ) {
-                            Icon(
-                                imageVector = ImageVector.vectorResource(R.drawable.calender),
-                                contentDescription = "내 기록 아이콘 (캘린더)",
-                                modifier = Modifier
-                                    .size(width = 30.dp, height = 30.dp)
-
-                            )
+                            Column {
+                                Icon(
+                                    imageVector = ImageVector.vectorResource(R.drawable.calender),
+                                    contentDescription = "내 기록 아이콘 (캘린더)",
+                                    modifier = Modifier
+                                        .size(40.dp),
+                                    tint = if (currentRoute == "calender") NeonBlue else Gray200
+                                )
+                                Text(
+                                    text = "내기록",
+                                    color = if (currentRoute == "calender") NeonBlue else Gray500,
+                                    fontSize = 16.sp,
+                                    fontWeight = FontWeight.Bold
+                                )
+                            }
                         }
                     },
                     actionIcon1 = {
+                        val currentRoute = navController.currentDestination?.route
+
                         IconButton(
                             onClick = { navController.navigate("input") },
-                            modifier = Modifier
-                                .size(width = 80.dp, height = 78.dp)
-                                .padding(start = 8.dp, top = 8.dp, end = 8.dp, bottom = 8.dp)
+//                            modifier = Modifier
+//                                .padding(start = 8.dp, top = 8.dp, end = 8.dp, bottom = 8.dp)
                         ) {
-                            Icon(
-                                imageVector = ImageVector.vectorResource(R.drawable.info),
-                                contentDescription = "영양정보 아이콘",
-                                modifier = Modifier.fillMaxSize()
-                            )
+                            Column {
+                                Icon(
+                                    imageVector = ImageVector.vectorResource(R.drawable.info),
+                                    contentDescription = "영양정보 아이콘",
+                                    modifier = Modifier.size(40.dp),
+                                    tint = if (currentRoute == "input") NeonBlue else Gray200
+                                )
+                                Text(
+                                    text = "영양정보",
+                                    color = if (currentRoute == "input") NeonBlue else Gray500,
+                                    fontSize = 16.sp,
+                                    fontWeight = FontWeight.Bold
+                                )
+                            }
                         }
                     },
                     actionIcon2 = {
+                        val currentRoute = navController.currentDestination?.route
+
                         IconButton(
                             onClick = { /* doSomething() */ },
-                            modifier = Modifier
-                                .size(width = 80.dp, height = 78.dp)
-                                .padding(start = 8.dp, top = 8.dp, end = 8.dp, bottom = 8.dp)
+//                            modifier = Modifier
+//                                .padding(start = 8.dp, top = 8.dp, end = 8.dp, bottom = 8.dp)
                         ) {
-                            Icon(
-                                imageVector = ImageVector.vectorResource(R.drawable.consult),
-                                contentDescription = "상담 아이콘",
-                                modifier = Modifier.fillMaxSize()
-                            )
+                            Column {
+                                Icon(
+                                    imageVector = ImageVector.vectorResource(R.drawable.consult),
+                                    contentDescription = "상담 아이콘",
+                                    modifier = Modifier.size(40.dp),
+//                                    tint = if (currentRoute == "") NeonRed else Gray200
+                                    tint = Gray200
+                                )
+                                Text(
+                                    text = "상담",
+//                                    color = if (currentRoute == "calender") NeonRed else Gray500,
+                                    color = Gray500,
+                                    fontSize = 16.sp,
+                                    fontWeight = FontWeight.Bold
+                                )
+                            }
                         }
                     },
                     actionIcon3 = {
+                        val currentRoute = navController.currentDestination?.route
+
                         IconButton(
-                            onClick = { navController.navigate("state")},
-                            modifier = Modifier
-                                .size(width = 80.dp, height = 78.dp)
-                                .padding(start = 8.dp, top = 8.dp, end = 8.dp, bottom = 8.dp)
+                            onClick = { navController.navigate("state") },
+//                            modifier = Modifier
+//                                .padding(start = 8.dp, top = 8.dp, end = 8.dp, bottom = 8.dp)
                         ) {
-                            Icon(
-                                imageVector = ImageVector.vectorResource(R.drawable.state),
-                                contentDescription = "내 상태 아이콘",
-                                modifier = Modifier.fillMaxSize()
-                            )
+                            Column {
+                                Icon(
+                                    imageVector = ImageVector.vectorResource(R.drawable.state),
+                                    contentDescription = "내 상태 아이콘",
+                                    modifier = Modifier.size(40.dp),
+                                    tint = if (currentRoute == "state") NeonBlue else Gray200
+                                )
+                                Text(
+                                    text = "내상태",
+                                    color = if (currentRoute == "state") NeonBlue else Gray500,
+                                    fontSize = 16.sp,
+                                    fontWeight = FontWeight.Bold
+                                )
+                            }
                         }
                     }
                 )
@@ -265,7 +318,7 @@ fun InputScreen(navController: NavController) {
             CameraAndGallery(cameraLauncher, launcher)
         }
 
-        Spacer(modifier = Modifier.height(5.dp))
+        Spacer(modifier = Modifier.height(15.dp))
 
         // 영양정보 분석하기 버튼
         GetiButton(
@@ -295,7 +348,7 @@ private fun CameraAndGallery(
     launcher: ManagedActivityResultLauncher<PickVisualMediaRequest, Uri?>
 ) {
     Row(
-        horizontalArrangement = Arrangement.SpaceBetween,
+        horizontalArrangement = Arrangement.Center,
         modifier = Modifier.width(320.dp)
     ) {
         // 카메라 실행 버튼
@@ -307,6 +360,7 @@ private fun CameraAndGallery(
             text = "사진 찍기",
             iconPath = R.drawable.camera_svgrepo_com
         )
+        Spacer(modifier = Modifier.width(8.dp))
         // 사진 선택 도구 실행 버튼
         CameraGalleryButton(
             onclick = {
@@ -337,7 +391,9 @@ fun GetiButton(onclick: () -> Unit, text: String) {
             textAlign = TextAlign.Center,
             fontWeight = FontWeight.Bold,
             fontSize = 18.sp,
-            modifier = Modifier.fillMaxSize()
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(top = 10.dp)
         )
     }
 }
@@ -351,7 +407,8 @@ fun CameraGalleryButton(onclick: () -> Unit, text: String, iconPath: Int) {
             .clip(RoundedCornerShape(8.dp))
             .border(1.dp, Color(0xFFCACDD1), RoundedCornerShape(8.dp))
             .width(156.dp)
-            .height(100.dp),
+            .height(100.dp)
+            .padding(0.dp),
         colors = IconButtonDefaults.iconButtonColors(Color.White)
     ) {
         Column(
@@ -410,13 +467,13 @@ fun BottomBar(
     actionIcon3: @Composable () -> Unit
 ) {
     BottomAppBar(
-        contentPadding = PaddingValues(horizontal = 0.dp), // 10
-        modifier = Modifier.background(MaterialTheme.colorScheme.primary)
+//        contentPadding = PaddingValues(start = 20.dp, end = 20.dp), // 10
+        modifier = Modifier.background(Gray50).fillMaxWidth()
     ) {
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .background(Color.White),
+                .background(Gray50),
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
             navigationIcon()
