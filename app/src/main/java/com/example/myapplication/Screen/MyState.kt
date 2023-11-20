@@ -41,6 +41,7 @@ import androidx.navigation.NavController
 import com.example.myapplication.R
 import com.example.myapplication.ui.theme.Gray400
 import com.example.myapplication.ui.theme.Gray50
+import com.example.myapplication.ui.theme.Gray600
 import com.example.myapplication.ui.theme.NeonBlue
 import com.example.myapplication.ui.theme.NeonRed
 
@@ -180,39 +181,67 @@ fun MyState(navController: NavController) {
                 Column(
                     modifier = Modifier.padding(20.dp)
                 ) {
+                    TitleText(text = "오늘 나의 열량")
+                    Spacer(modifier = Modifier.height(8.dp))
+                    ContentText(text = "1300 kcal")
+                }
+            }
+        }
+        item {
+            Spacer(modifier = Modifier.height(24.dp))
+            Card(
+                colors = CardDefaults.cardColors(Color.White),
+                shape = RoundedCornerShape(12.dp),
+                modifier = Modifier
+                    .width(320.dp)
+            ) {
+                Column(
+                    modifier = Modifier.padding(20.dp)
+                ) {
+                    TitleText(text = "오늘 나의 당질")
+                    Spacer(modifier = Modifier.height(8.dp))
+                    ContentText(text = "90 g")
+                }
+            }
+        }
+        item {
+            Spacer(modifier = Modifier.height(24.dp))
+            Card(
+                colors = CardDefaults.cardColors(Color.White),
+                shape = RoundedCornerShape(12.dp),
+                modifier = Modifier
+                    .width(320.dp)
+            ) {
+                Column(
+                    modifier = Modifier.padding(20.dp)
+                ) {
+                    Text(
+                        text = "한 주 요약",
+                        color = Gray600,
+                        fontSize = 24.sp,
+                        fontWeight = FontWeight.Bold,
+                        textAlign = TextAlign.Start,
+                        modifier = Modifier.wrapContentWidth(align = Alignment.Start)
+                    )
+                    Spacer(modifier = Modifier.height(8.dp))
+                    TitleText(text = "한 주 또는 한 달을 기준으로 분석하여 사용자에게 사용자의 건강에 대한 정보를 제공할 예정입니다. 차트, 표, 그래프 등의 시각화 자료를 적극 반영하려고 합니다.")
+                }
+            }
+        }
+        item {
+            Spacer(modifier = Modifier.height(24.dp))
+            Card(
+                colors = CardDefaults.cardColors(Color.White),
+                shape = RoundedCornerShape(12.dp),
+                modifier = Modifier
+                    .width(320.dp)
+            ) {
+                Column(
+                    modifier = Modifier.padding(20.dp)
+                ) {
                     TitleText(text = "지난 주 나의 평균 열량")
                     Spacer(modifier = Modifier.height(8.dp))
-                    ContentText(text = "2,000 kcal")
-                }
-            }
-        }
-        item {
-            Spacer(modifier = Modifier.height(12.dp))
-            Card(
-                colors = CardDefaults.cardColors(Color.White),
-                shape = RoundedCornerShape(12.dp),
-                modifier = Modifier
-                    .width(320.dp)
-                    .height(80.dp)
-            ) {
-                Column(
-                    modifier = Modifier.padding(20.dp)
-                ) {
-                }
-            }
-        }
-        item {
-            Spacer(modifier = Modifier.height(12.dp))
-            Card(
-                colors = CardDefaults.cardColors(Color.White),
-                shape = RoundedCornerShape(12.dp),
-                modifier = Modifier
-                    .width(320.dp)
-                    .height(80.dp)
-            ) {
-                Column(
-                    modifier = Modifier.padding(20.dp)
-                ) {
+                    ContentText(text = "1300 kcal")
                 }
             }
         }
@@ -223,22 +252,69 @@ fun MyState(navController: NavController) {
                 shape = RoundedCornerShape(12.dp),
                 modifier = Modifier
                     .width(320.dp)
-                    .height(80.dp)
             ) {
                 Column(
                     modifier = Modifier.padding(20.dp)
                 ) {
                     Text(
-                        text = "지난 주 나의 평균 열량",
+                        text = "지난 주 나의 총 열량",
                         fontWeight = FontWeight.Medium,
                         fontSize = 18.sp,
-                        color = NeonRed,
+                        color = Color.White,
                         textAlign = TextAlign.Start,
                         modifier = Modifier.wrapContentWidth(align = Alignment.Start)
                     )
                     Spacer(modifier = Modifier.height(8.dp))
                     Text(
-                        text = "2,000 kcal",
+                        text = "2,4000 kcal",
+                        color = Color.White,
+                        fontSize = 24.sp,
+                        fontWeight = FontWeight.Bold,
+                        textAlign = TextAlign.Start,
+                        modifier = Modifier.wrapContentWidth(align = Alignment.Start)
+                    )
+                }
+            }
+        }
+        item {
+            Spacer(modifier = Modifier.height(24.dp))
+            Card(
+                colors = CardDefaults.cardColors(Color.White),
+                shape = RoundedCornerShape(12.dp),
+                modifier = Modifier
+                    .width(320.dp)
+            ) {
+                Column(
+                    modifier = Modifier.padding(20.dp)
+                ) {
+                    TitleText(text = "지난 주 나의 평균 당질")
+                    Spacer(modifier = Modifier.height(8.dp))
+                    ContentText(text = "55 g")
+                }
+            }
+        }
+        item {
+            Spacer(modifier = Modifier.height(12.dp))
+            Card(
+                colors = CardDefaults.cardColors(NeonRed),
+                shape = RoundedCornerShape(12.dp),
+                modifier = Modifier
+                    .width(320.dp)
+            ) {
+                Column(
+                    modifier = Modifier.padding(20.dp)
+                ) {
+                    Text(
+                        text = "지난 주 나의 총 당질",
+                        fontWeight = FontWeight.Medium,
+                        fontSize = 18.sp,
+                        color = Color.White,
+                        textAlign = TextAlign.Start,
+                        modifier = Modifier.wrapContentWidth(align = Alignment.Start)
+                    )
+                    Spacer(modifier = Modifier.height(8.dp))
+                    Text(
+                        text = "1050 g",
                         color = Color.White,
                         fontSize = 24.sp,
                         fontWeight = FontWeight.Bold,
