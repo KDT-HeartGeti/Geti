@@ -37,11 +37,19 @@ import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.vectorResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.myapplication.R
 import com.example.myapplication.data.CalendarDataSource
 import com.example.myapplication.data.CalendarUiModel
+import com.example.myapplication.ui.theme.Gray200
+import com.example.myapplication.ui.theme.Gray400
+import com.example.myapplication.ui.theme.Gray50
+import com.example.myapplication.ui.theme.Gray500
+import com.example.myapplication.ui.theme.NeonBlue
+import com.example.myapplication.ui.theme.NeonRed
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 import java.time.format.FormatStyle
@@ -60,98 +68,167 @@ fun CalendarScreen(navController: NavController) {
 
     var isToggled by remember { mutableStateOf(false) }
 
-    val toggleImage: Painter = if (isToggled) {
-        painterResource(R.drawable.toggle_on)
-    } else {
-        painterResource(R.drawable.toggle_off)
+    val toggleImage by remember(isToggled) {
+        mutableStateOf(if (isToggled) R.drawable.toggle_on_svgrepo_com else R.drawable.toggle_off_svgrepo_com)
     }
 
     Scaffold(
+        Modifier.background(Gray50),
         topBar = {
-            TopBar(
-                title = "홍길동",
-                navigationIcon = {
-                    IconButton(onClick = { /* doSomething() */ }) {
-                        Icon(
-                            imageVector = Icons.Filled.Menu,
-                            contentDescription = "프로필 사진"
-                        )
+            Box(
+                modifier = Modifier
+                    .padding(start = 20.dp, end = 20.dp)
+                    .height(64.dp)
+//                    .clip(
+//                        RoundedCornerShape(bottomStart = 12.dp, bottomEnd = 12.dp)
+//                    )
+            ) {
+                TopBar(
+                    title = "김상은",
+                    navigationIcon = {
+                        IconButton(onClick = { /* doSomething() */ }) {
+                            Icon(
+                                painter = painterResource(id = R.drawable.heartbeat_logo),
+                                contentDescription = "프로필 사진"
+                            )
+                        }
+                    },
+                    actionIcon = {
+                        IconButton(
+                            onClick = { isToggled = !isToggled }
+                        ) {
+                            Icon(
+                                ImageVector.vectorResource(id = toggleImage),
+                                contentDescription = "토글 아이콘",
+                                tint = if (isToggled) Gray400 else NeonBlue
+                            )
+                        }
                     }
-                },
-                actionIcon = {
-                    IconButton(
-                        onClick = { isToggled = !isToggled }
-                    ) {
-                        Icon(
-                            painter = toggleImage,
-                            contentDescription = "토글 아이콘"
-                        )
-                    }
-                }
-            )
+                )
+            }
         },
         bottomBar = {
             Box(
                 modifier = Modifier
-                    .background(MaterialTheme.colorScheme.primary)
+                    .background(NeonRed)
                     .fillMaxWidth()
-                    .height(56.dp)
+                    .height(70.dp)
+//                    .padding(start = 20.dp, end = 20.dp)
             ) {
                 BottomBar(
                     navigationIcon = {
+                        val currentRoute = navController.currentDestination?.route
+
                         IconButton(
                             onClick = { navController.navigate("calender") },
                             modifier = Modifier
-                                .size(width = 80.dp, height = 78.dp)
-                                .padding(start = 8.dp, top = 8.dp, end = 8.dp, bottom = 8.dp)
+                                .size(70.dp)
+//                                .padding(start = 14.dp, top = 8.dp, end = 14.dp, bottom = 8.dp)
                         ) {
-                            Icon(
-                                imageVector = ImageVector.vectorResource(R.drawable.calender),
-                                contentDescription = "내 기록 아이콘 (캘린더)",
-                                modifier = Modifier.fillMaxSize()
-                            )
+                            Column(
+                                verticalArrangement = Arrangement.Center,
+                                horizontalAlignment = Alignment.CenterHorizontally
+                            ) {
+                                Icon(
+                                    imageVector = ImageVector.vectorResource(R.drawable.calender),
+                                    contentDescription = "내 기록 아이콘 (캘린더)",
+                                    modifier = Modifier
+                                        .size(30.dp),
+                                    tint = if (currentRoute == "calender") NeonBlue else Gray200
+                                )
+                                Text(
+                                    text = "내기록",
+                                    color = if (currentRoute == "calender") NeonBlue else Gray500,
+                                    fontSize = 14.sp,
+                                    fontWeight = FontWeight.Bold
+                                )
+                            }
                         }
                     },
                     actionIcon1 = {
+                        val currentRoute = navController.currentDestination?.route
+
                         IconButton(
                             onClick = { navController.navigate("input") },
                             modifier = Modifier
-                                .size(width = 80.dp, height = 78.dp)
-                                .padding(start = 8.dp, top = 8.dp, end = 8.dp, bottom = 8.dp)
+                                .size(70.dp)
+//                                .padding(start = 8.dp, top = 8.dp, end = 8.dp, bottom = 8.dp)
                         ) {
-                            Icon(
-                                imageVector = ImageVector.vectorResource(R.drawable.info),
-                                contentDescription = "영양정보 아이콘",
-                                modifier = Modifier.fillMaxSize()
-                            )
+                            Column(
+                                verticalArrangement = Arrangement.Center,
+                                horizontalAlignment = Alignment.CenterHorizontally
+                            ) {
+                                Icon(
+                                    imageVector = ImageVector.vectorResource(R.drawable.info),
+                                    contentDescription = "영양정보 아이콘",
+                                    modifier = Modifier.size(30.dp),
+                                    tint = if (currentRoute == "input") NeonBlue else Gray200
+                                )
+                                Text(
+                                    text = "영양정보",
+                                    color = if (currentRoute == "input") NeonBlue else Gray500,
+                                    fontSize = 14.sp,
+                                    fontWeight = FontWeight.Bold
+                                )
+                            }
                         }
                     },
                     actionIcon2 = {
+                        val currentRoute = navController.currentDestination?.route
+
                         IconButton(
-                            onClick = { /* doSomething() */},
+                            onClick = { /* doSomething() */ },
                             modifier = Modifier
-                                .size(width = 80.dp, height = 78.dp)
-                                .padding(start = 8.dp, top = 8.dp, end = 8.dp, bottom = 8.dp)
+                                .size(70.dp)
+//                                .padding(start = 8.dp, top = 8.dp, end = 8.dp, bottom = 8.dp)
                         ) {
-                            Icon(
-                                imageVector = ImageVector.vectorResource(R.drawable.consult),
-                                contentDescription = "상담 아이콘",
-                                modifier = Modifier.fillMaxSize()
-                            )
+                            Column(
+                                verticalArrangement = Arrangement.Center,
+                                horizontalAlignment = Alignment.CenterHorizontally
+                            ) {
+                                Icon(
+                                    imageVector = ImageVector.vectorResource(R.drawable.consult),
+                                    contentDescription = "상담 아이콘",
+                                    modifier = Modifier.size(30.dp),
+//                                    tint = if (currentRoute == "") NeonRed else Gray200
+                                    tint = Gray200
+                                )
+                                Text(
+                                    text = "상담",
+//                                    color = if (currentRoute == "calender") NeonRed else Gray500,
+                                    color = Gray500,
+                                    fontSize = 14.sp,
+                                    fontWeight = FontWeight.Bold
+                                )
+                            }
                         }
                     },
                     actionIcon3 = {
+                        val currentRoute = navController.currentDestination?.route
+
                         IconButton(
-                            onClick = { /* doSomething() */},
+                            onClick = { navController.navigate("state") },
                             modifier = Modifier
-                                .size(width = 80.dp, height = 78.dp)
-                                .padding(start = 8.dp, top = 8.dp, end = 8.dp, bottom = 8.dp)
+                                .size(70.dp)
+//                                .padding(start = 8.dp, top = 8.dp, end = 8.dp, bottom = 8.dp)
                         ) {
-                            Icon(
-                                imageVector = ImageVector.vectorResource(R.drawable.state),
-                                contentDescription = "내 상태 아이콘",
-                                modifier = Modifier.fillMaxSize()
-                            )
+                            Column(
+                                verticalArrangement = Arrangement.Center,
+                                horizontalAlignment = Alignment.CenterHorizontally
+                            ) {
+                                Icon(
+                                    imageVector = ImageVector.vectorResource(R.drawable.state),
+                                    contentDescription = "내 상태 아이콘",
+                                    modifier = Modifier.size(30.dp),
+                                    tint = if (currentRoute == "state") NeonBlue else Gray200
+                                )
+                                Text(
+                                    text = "내상태",
+                                    color = if (currentRoute == "state") NeonBlue else Gray500,
+                                    fontSize = 14.sp,
+                                    fontWeight = FontWeight.Bold
+                                )
+                            }
                         }
                     }
                 )
@@ -162,6 +239,7 @@ fun CalendarScreen(navController: NavController) {
                 modifier = Modifier
                     .fillMaxSize()
                     .padding(innerPadding)
+                    .background(Gray50)
             ) {
                 Calender(calendarUiModel, dataSource)
             }

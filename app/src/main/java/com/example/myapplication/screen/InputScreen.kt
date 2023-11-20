@@ -122,11 +122,10 @@ fun InputActivity(navController: NavController) {
                 modifier = Modifier
                     .background(NeonRed)
                     .fillMaxWidth()
-                    .height(80.dp)
+                    .height(70.dp)
 //                    .padding(start = 20.dp, end = 20.dp)
             ) {
                 BottomBar(
-
                     navigationIcon = {
                         val currentRoute = navController.currentDestination?.route
 
@@ -138,13 +137,13 @@ fun InputActivity(navController: NavController) {
                         ) {
                             Column(
                                 verticalArrangement = Arrangement.Center,
-                                horizontalAlignment = Alignment.CenterHorizontally
+                                horizontalAlignment = Alignment.CenterHorizontally,
                             ) {
                                 Icon(
                                     imageVector = ImageVector.vectorResource(R.drawable.calender),
                                     contentDescription = "내 기록 아이콘 (캘린더)",
                                     modifier = Modifier
-                                        .size(40.dp),
+                                        .size(30.dp),
                                     tint = if (currentRoute == "calender") NeonBlue else Gray200
                                 )
                                 Text(
@@ -172,7 +171,7 @@ fun InputActivity(navController: NavController) {
                                 Icon(
                                     imageVector = ImageVector.vectorResource(R.drawable.info),
                                     contentDescription = "영양정보 아이콘",
-                                    modifier = Modifier.size(40.dp),
+                                    modifier = Modifier.size(30.dp),
                                     tint = if (currentRoute == "input") NeonBlue else Gray200
                                 )
                                 Text(
@@ -200,7 +199,7 @@ fun InputActivity(navController: NavController) {
                                 Icon(
                                     imageVector = ImageVector.vectorResource(R.drawable.consult),
                                     contentDescription = "상담 아이콘",
-                                    modifier = Modifier.size(40.dp),
+                                    modifier = Modifier.size(30.dp),
 //                                    tint = if (currentRoute == "") NeonRed else Gray200
                                     tint = Gray200
                                 )
@@ -230,7 +229,7 @@ fun InputActivity(navController: NavController) {
                                 Icon(
                                     imageVector = ImageVector.vectorResource(R.drawable.state),
                                     contentDescription = "내 상태 아이콘",
-                                    modifier = Modifier.size(40.dp),
+                                    modifier = Modifier.size(30.dp),
                                     tint = if (currentRoute == "state") NeonBlue else Gray200
                                 )
                                 Text(
