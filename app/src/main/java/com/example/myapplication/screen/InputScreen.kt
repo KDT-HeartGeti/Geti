@@ -89,6 +89,8 @@ fun InputActivity(navController: NavController) {
                 modifier = Modifier
                     .padding(start = 20.dp, end = 20.dp)
                     .height(64.dp)
+                    .background(Color.White)
+
 //                    .clip(
 //                        RoundedCornerShape(bottomStart = 12.dp, bottomEnd = 12.dp)
 //                    )
@@ -466,7 +468,7 @@ fun TopBar(
                 overflow = TextOverflow.Ellipsis,
                 fontWeight = FontWeight.ExtraBold,
                 style = MaterialTheme.typography.titleLarge.copy(fontSize = 22.sp),
-                textAlign = TextAlign.Start
+                textAlign = TextAlign.Start,
             )
         },
         navigationIcon = navigationIcon,
@@ -486,8 +488,8 @@ fun BottomBar(
     BottomAppBar(
 //        contentPadding = PaddingValues(start = 20.dp, end = 20.dp), // 10
         modifier = Modifier
-            .background(Gray50)
-            .fillMaxWidth()
+            .fillMaxWidth(),
+        containerColor = Gray50
     ) {
         Row(
             modifier = Modifier

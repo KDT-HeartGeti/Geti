@@ -67,6 +67,8 @@ dependencies {
     implementation("org.tensorflow:tensorflow-lite-support:0.1.0")
     implementation("org.tensorflow:tensorflow-lite-metadata:0.1.0")
     implementation(platform("androidx.compose:compose-bom:2023.03.00"))
+    implementation("com.google.android.gms:play-services-auth:20.7.0")
+    implementation("androidx.media3:media3-common:1.2.0")
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
@@ -88,6 +90,29 @@ dependencies {
     implementation("com.google.firebase:firebase-analytics")
     // Add the dependencies for any other desired Firebase products
     // https://firebase.google.com/docs/android/setup#available-libraries
+
+    implementation("com.google.firebase:firebase-auth-ktx")
+    implementation("com.google.firebase:firebase-firestore-ktx")
+//    implementation("com.google.firebase:firebase-storage-ktx")
+//    implementation("com.google.firebase:firebase-database-ktx")
+//    implementation("com.google.firebase:firebase-messaging-ktx")
+//    implementation("com.google.firebase:firebase-analytics-ktx")
+//    implementation("com.google.firebase:firebase-crashlytics-ktx")
+//    implementation("com.google.firebase:firebase-appindexing-ktx")
+//    implementation("com.google.firebase:firebase-perf-ktx")
+//    implementation("com.google.firebase:firebase-ml-vision")
+//    implementation("com.google.firebase:firebase-ml-vision-image-label-model")
+//    implementation("com.google.firebase:firebase-ml-vision-face-model")
+//    implementation("com.google.firebase:firebase-ml-model-interpreter")
+//    implementation("com.google.firebase:firebase-ml-vision-object-detection-model")
+//    implementation("com.google.firebase:firebase-ml-vision-barcode-model")
+//    implementation("com.google.firebase:firebase-ml-natural-language")
+//    implementation("com.google.firebase:firebase-ml-natural-language-language-id-model")
+//    implementation("com.google.firebase:firebase-ml-natural-language-smart-reply-model")
+//    implementation("com.google.firebase:firebase-ml-natural-language-translate-model")
+//    implementation("com.google.firebase:firebase-ml-natural-language-entity-extraction-model")
+//    implementation("com.google.firebase:firebase-ml-model-interpreter")
+
 
     implementation ("com.squareup.retrofit2:retrofit:2.9.0")
     implementation ("com.squareup.retrofit2:converter-gson:2.9.0")

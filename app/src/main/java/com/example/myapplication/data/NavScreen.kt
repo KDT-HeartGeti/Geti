@@ -9,4 +9,6 @@ sealed class NavScreen(val route: String) {
     object Input : NavScreen("input")
     object Loading : NavScreen("loading/{encodedUri}")
     object Output : NavScreen("output/{predictValue}/{encodedUri}")
+    object SuccessLogin : NavScreen("successLogin")
+    object Login : NavScreen("login")
 }
