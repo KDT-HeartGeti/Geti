@@ -5,9 +5,16 @@
 2030 당뇨병 환자들을 위한 식단 추천 프로젝트입니다.
 
 
+
+
+
 ## Design
 
 [Figma](https://www.figma.com/file/8wNRSgyRedQVYhgwyw0rHX/Untitled?type=design&node-id=11%3A69&mode=design&t=YUz0sxtb9nUAqrLp-1)에서 디자인을 확인하실 수 있습니다.
+
+
+
+
 
 
 ### Required
@@ -18,9 +25,19 @@
   - Java 21을 사용하는 JDK (Open JDK, AdoptOpenJDK, GraalVM)
 
 
+
+
+
+
+
 ### Language
 
 - Kotlin
+
+
+
+
+  
 
 ### Libraries
 
@@ -38,6 +55,10 @@
 
 - Square (Retrofit, OkHttp)
 
+
+
+
+
 #### Gradle Dependency
 
 - AndroidX
@@ -51,7 +72,15 @@
 - Firebase
 - Retrofit 및 OkHttp
 
+
+
+
+
 ## Thanks [![Hits](https://hits.seeyoufarm.com/api/count/incr/badge.svg?url=https%3A%2F%2Fgithub.com%2FKDT-HeartGeti%2FGeti&count_bg=%2345FFCA&title_bg=%23FFB6D9&icon=&icon_color=%23E7E7E7&title=Heart_Geti&edge_flat=false)](https://hits.seeyoufarm.com)
+
+
+
+
 
 - 참여해주신 모든 분들 감사합니다!
 - GitHub : [Contributors](https://github.com/KDT-HeartGeti/Geti/pulse)
