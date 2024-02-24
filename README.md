@@ -1,4 +1,4 @@
-<img width="1512" alt="banner" src="https://github.com/KDT-HeartGeti/Geti/assets/71699054/9e0d90f3-d164-44d4-bec5-608e9a00f3b1">
+<img width="1400" alt="banner" src="https://github.com/KDT-HeartGeti/Geti/assets/71699054/9e0d90f3-d164-44d4-bec5-608e9a00f3b1">
 
 # HeartGeti2023 App
 
